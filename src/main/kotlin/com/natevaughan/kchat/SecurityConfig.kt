@@ -1,6 +1,6 @@
-package com.natevaughan.kchat.security
+package com.natevaughan.kchat
 
-import com.natevaughan.kchat.model.User
+import com.natevaughan.kchat.model.message.user.User
 import java.security.Principal
 import javax.ws.rs.core.SecurityContext
 

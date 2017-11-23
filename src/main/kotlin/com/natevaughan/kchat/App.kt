@@ -5,10 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.natevaughan.kchat.AppCompanion.log
-import com.natevaughan.kchat.api.Api
-import com.natevaughan.kchat.api.ExceptionHandler
-import com.natevaughan.kchat.api.PoweredByResponseFilter
-import com.natevaughan.kchat.api.SecurityFilter
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory
 import org.glassfish.jersey.server.ResourceConfig
@@ -16,7 +12,9 @@ import org.slf4j.LoggerFactory
 import java.io.InputStreamReader
 import javax.ws.rs.core.UriBuilder
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
-
+import com.natevaughan.kchat.api.*
+import com.natevaughan.kchat.model.message.MessageCtrl
+import com.natevaughan.kchat.model.message.user.UserCtrl
 
 
 /**
@@ -41,7 +39,8 @@ fun main(args: Array<String>) {
     log.info("congiuring ReST...")
     val uri = UriBuilder.fromUri("http://localhost/").port(8080).build()
     val config = ResourceConfig(
-            Api::class.java,
+            UserCtrl::class.java,
+            MessageCtrl::class.java,
             ExceptionHandler::class.java,
             PoweredByResponseFilter::class.java,
             SecurityFilter::class.java,

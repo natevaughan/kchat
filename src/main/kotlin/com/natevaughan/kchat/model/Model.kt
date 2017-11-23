@@ -1,25 +1,16 @@
 package com.natevaughan.kchat.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.security.Principal
-import javax.persistence.Entity
-import javax.persistence.ManyToMany
+import com.natevaughan.kchat.model.message.Message
+import com.natevaughan.kchat.model.message.user.User
 
 /**
  * Created by nate on 11/22/17
  */
-@Entity
-class Message(val text: String, val author: User)
 
-@Entity
-class Chat(@ManyToMany val messages: Array<Message>, @ManyToMany val participants: Array<User>)
-
-@Entity
-class User(private val name: String, val role: Role, val apiKey: String): Principal {
-    override fun getName(): String {
-        return name
-    }
+//@Entity
+class Chat(val name: String, val messages: Array<Message>, val creator: User){
+//    @Id
+//    @GeneratedValue(strategy=GenerationType.AUTO)
+    val id: Long? = null
 }
 
-enum class Role { USER, ADMIN }
