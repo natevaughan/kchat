@@ -1,13 +1,12 @@
 package com.natevaughan.kchat.model.message.user
 
-import com.natevaughan.kchat.api.CREATED
-import com.natevaughan.kchat.api.CreateChat
+import com.natevaughan.kchat.api.ApiKey
 import com.natevaughan.kchat.api.UnauthorizedException
+import java.util.*
 import javax.inject.Singleton
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response
 import javax.ws.rs.core.SecurityContext
 
 /**
@@ -17,16 +16,16 @@ import javax.ws.rs.core.SecurityContext
 @Path("/user")
 class UserCtrl {
 
-    val userRepo: UserRepo = HibernateUserRepo()
+    val userRepo: UserRepo = CacheUserRepo.getInstance()
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    fun createUser(user: User, @Context sc: SecurityContext): Response {
+    fun createUser(user: User, @Context sc: SecurityContext): ApiKey {
         val requester = sc.userPrincipal as User
         if (requester.role != Role.ADMIN) {
             throw UnauthorizedException("Must have admin role")
         }
-        userRepo.save(user)
-        return CREATED
+        val newUser = user.copy(apiKey = UUID.randomUUID().toString())
+        return ApiKey(userRepo.save(newUser).apiKey)
     }
 }

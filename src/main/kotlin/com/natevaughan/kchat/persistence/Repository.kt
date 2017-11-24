@@ -6,7 +6,7 @@ package com.natevaughan.kchat.persistence
 
 interface Identifieable<T> {
     fun findById(id: Long): T
-    fun save(entity: T)
+    fun save(entity: T): T
 
 }
 

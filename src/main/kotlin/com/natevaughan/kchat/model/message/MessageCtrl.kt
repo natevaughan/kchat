@@ -2,6 +2,7 @@ package com.natevaughan.kchat.model.message
 
 import com.natevaughan.kchat.api.CREATED
 import com.natevaughan.kchat.api.RestMessage
+import com.natevaughan.kchat.api.UnauthorizedException
 import com.natevaughan.kchat.model.message.user.User
 import javax.inject.Singleton
 import javax.ws.rs.*
@@ -17,13 +18,25 @@ import javax.ws.rs.core.SecurityContext
 @Path("/message")
 class MessageCtrl {
 
-    val messageRepo: MessageRepo = HibernateMessageRepo()
+    val messageRepo: MessageRepo = CacheMessageRepo()
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    fun message(@PathParam("id") id: Long, @Context sc: SecurityContext): Array<Message> {
-        return arrayOf(Message(author = sc.userPrincipal as User, text = "hello, world $id", timestamp = System.currentTimeMillis()))
+    fun message(@PathParam("id") id: Long, @Context sc: SecurityContext): Message {
+        return messageRepo.findById(id)
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun updateMessage(@PathParam("id") id: Long, message: RestMessage, @Context sc: SecurityContext): Message {
+        val old = messageRepo.findById(id)
+        if (old.author != sc.userPrincipal as User) {
+            throw UnauthorizedException("Requester/author mismatch")
+        }
+        val new = old.copy(text = message.text)
+        return messageRepo.save(new)
     }
 
 

@@ -15,11 +15,12 @@ interface UserRepo : Identifieable<User> {
 
 class HibernateUserRepo : UserRepo {
 
-    override fun save(entity: User) {
+    override fun save(entity: User): User {
         entityManager.transaction.begin()
         entityManager.persist(entity)
         entityManager.flush()
         entityManager.transaction.commit()
+        return entity
     }
 
     override fun findByApiKey(key: String): User {
