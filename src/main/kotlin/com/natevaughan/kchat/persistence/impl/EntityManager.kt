@@ -1,6 +1,6 @@
 package com.natevaughan.kchat.persistence.impl
 
-import com.natevaughan.kchat.entityManagerFactory
+import com.natevaughan.kchat.DataSourceBuilder
 import javax.persistence.FlushModeType
 
 /**
@@ -8,7 +8,7 @@ import javax.persistence.FlushModeType
  */
 
 object EntityManagerContainer {
-    val entityManager = entityManagerFactory().createEntityManager()
+    val entityManager = DataSourceBuilder().entityManagerFactory().createEntityManager()
     init {
         entityManager.flushMode = FlushModeType.AUTO
     }

@@ -10,7 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel
  */
 
 @Entity
-class Message(val text: String, val timestamp: Long, @ManyToOne val author: User) {
+data class Message(val text: String, val timestamp: Long, @ManyToOne val author: User) {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

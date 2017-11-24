@@ -10,22 +10,19 @@ import javax.persistence.criteria.Root
  */
 
 interface MessageRepo: Identifieable<Message> {
-    fun findAllByChatId(chatId: String): Iterable<Message>
     fun findAllByUser(user: User): Iterable<Message>
     fun findAllSinceTimestamp(timestamp: Long): Iterable<Message>
+    fun findRecent(count: Int): Iterable<Message>
 }
 
 class HibernateMessageRepo : MessageRepo {
 
-    override fun save(entity: Message) {
+    override fun save(entity: Message): Message {
         entityManager.transaction.begin()
         entityManager.persist(entity)
         entityManager.flush()
         entityManager.transaction.commit()
-    }
-
-    override fun findAllByChatId(chatId: String): Iterable<Message> {
-        throw NotImplementedError()
+        return entity
     }
 
     override fun findAllByUser(user: User): Iterable<Message> {
@@ -51,6 +48,10 @@ class HibernateMessageRepo : MessageRepo {
     }
 
     override fun findById(id: Long): Message {
+        throw NotImplementedError()
+    }
+
+    override fun findRecent(count: Int): Iterable<Message> {
         throw NotImplementedError()
     }
 }

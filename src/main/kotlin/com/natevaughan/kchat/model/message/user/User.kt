@@ -1,5 +1,6 @@
 package com.natevaughan.kchat.model.message.user
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.security.Principal
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -13,11 +14,13 @@ import javax.persistence.metamodel.StaticMetamodel
  */
 
 @Entity
-class User(private val name: String, val role: Role, val apiKey: String): Principal {
+data class User(private val name: String, val role: Role, @JsonIgnore val apiKey: String): Principal {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     var id: Long? = null
 
+    // necessary for explicit override of Principal.getName()
     override fun getName(): String {
         return name
     }

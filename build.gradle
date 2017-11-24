@@ -1,5 +1,5 @@
 group 'com.natevaughan'
-version '0.0.1-SNAPSHOT'
+version '0.0.3-SNAPSHOT'
 
 buildscript {
     ext.jerseyVersion  = '2.23'
@@ -19,13 +19,14 @@ buildscript {
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-jpa'
 
+
 task fatJar(type: Jar, dependsOn: test) {
-    manifest {
-        attributes 'Main-Class':'com.natevaughan.kchat.App'
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+	manifest {
+		attributes 'Main-Class':'com.natevaughan.kchat.App'
+	}
+	baseName = project.name + '-all'
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
 }
 
 repositories {
@@ -36,6 +37,7 @@ repositories {
 dependencies {
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+	compile 'com.natpryce:konfig:1.6.1.0'
 
     // rest
     compile "org.glassfish.jersey.containers:jersey-container-jdk-http:$jerseyVersion"

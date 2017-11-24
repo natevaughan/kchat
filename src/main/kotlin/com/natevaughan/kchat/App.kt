@@ -13,8 +13,12 @@ import java.io.InputStreamReader
 import javax.ws.rs.core.UriBuilder
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.natevaughan.kchat.api.*
+import com.natevaughan.kchat.model.chat.UtilityCtrl
 import com.natevaughan.kchat.model.message.MessageCtrl
 import com.natevaughan.kchat.model.message.user.UserCtrl
+import com.natpryce.konfig.ConfigurationProperties
+import com.natpryce.konfig.EnvironmentVariables
+import com.natpryce.konfig.overriding
 
 
 /**
@@ -27,18 +31,33 @@ object AppCompanion {
 
 fun main(args: Array<String>) {
 
+    log.info("loading configurations")
+
+    val appConfig = ConfigurationProperties.systemProperties() overriding
+            EnvironmentVariables() overriding
+            ConfigurationProperties.fromResource("defaults.properties")
+
+    log.info("configuring datasource")
+
+    val dataSource = DataSourceBuilder()
+    dataSource.jdbcDriver = appConfig.get(jdbc.driver)
+    dataSource.jdbcUrl = appConfig.get(jdbc.url)
+    dataSource.jdbcUser = appConfig.get(jdbc.user)
+    dataSource.jdbcPass = appConfig.get(jdbc.pass)
+
     log.info("starting app configuration")
 
     val mapper = ObjectMapper()
         .registerModule(KotlinModule())
         .enable(SerializationFeature.INDENT_OUTPUT)
 
-    val provider = JacksonJaxbJsonProvider()
-    provider.setMapper(mapper)
+    val jsonProvider = JacksonJaxbJsonProvider()
+    jsonProvider.setMapper(mapper)
 
     log.info("congiuring ReST...")
-    val uri = UriBuilder.fromUri("http://localhost/").port(8080).build()
-    val config = ResourceConfig(
+
+    val resources = ResourceConfig(
+            UtilityCtrl::class.java,
             UserCtrl::class.java,
             MessageCtrl::class.java,
             ExceptionHandler::class.java,
@@ -47,10 +66,13 @@ fun main(args: Array<String>) {
             JacksonFeature::class.java
     )
 
-    config.register(provider)
+    val uri = UriBuilder
+            .fromUri(appConfig.get(server.host))
+            .port(appConfig.get(server.port)).build()
+    resources.register(jsonProvider)
 
     log.info("starting server...")
-    val server = JdkHttpServerFactory.createHttpServer(uri, config)
+    val server = JdkHttpServerFactory.createHttpServer(uri, resources)
 
     log.info("App started at ${uri.host}:${uri.port}. Press <enter> to terminate.")
 
