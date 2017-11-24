@@ -16,7 +16,7 @@ import javax.persistence.metamodel.StaticMetamodel
 class User(private val name: String, val role: Role, val apiKey: String): Principal {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    val id: Long? = null
+    var id: Long? = null
 
     override fun getName(): String {
         return name

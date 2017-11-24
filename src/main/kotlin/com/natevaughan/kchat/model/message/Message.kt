@@ -14,7 +14,7 @@ class Message(val text: String, val timestamp: Long, @ManyToOne val author: User
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    val id: Long? = null
+    var id: Long? = null
 }
 
 // required for hibernate criteria queries
