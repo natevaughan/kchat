@@ -1,7 +1,8 @@
 package com.natevaughan.kchat.model.message.user
 
 import com.natevaughan.kchat.api.CREATED
-import com.natevaughan.kchat.model.Chat
+import com.natevaughan.kchat.api.CreateChat
+import com.natevaughan.kchat.api.UnauthorizedException
 import javax.inject.Singleton
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -21,16 +22,11 @@ class UserCtrl {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     fun createUser(user: User, @Context sc: SecurityContext): Response {
+        val requester = sc.userPrincipal as User
+        if (requester.role != Role.ADMIN) {
+            throw UnauthorizedException("Must have admin role")
+        }
         userRepo.save(user)
-        return CREATED
-    }
-
-
-    @POST
-    @Path("/chat/{name}")
-    @Produces(MediaType.APPLICATION_JSON)
-    fun createChat(@PathParam("name") name: String, @Context sc: SecurityContext): Response {
-        val chat = Chat(name = name, creator = sc.userPrincipal as User, messages = emptyArray())
         return CREATED
     }
 }

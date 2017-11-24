@@ -6,3 +6,4 @@ package com.natevaughan.kchat.api
  * ReST-specific entities
  */
 class RestMessage(val text: String)
+class CreateChat(val invitees: Array<String>)

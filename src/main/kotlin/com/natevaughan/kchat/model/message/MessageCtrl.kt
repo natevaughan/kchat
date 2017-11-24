@@ -22,15 +22,27 @@ class MessageCtrl {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    fun getMessages(@PathParam("id") id: String, @Context sc: SecurityContext): Array<Message> {
-        return arrayOf(Message(author = sc.userPrincipal as User, text = "hello, world $id"))
+    fun message(@PathParam("id") id: Long, @Context sc: SecurityContext): Array<Message> {
+        return arrayOf(Message(author = sc.userPrincipal as User, text = "hello, world $id", timestamp = System.currentTimeMillis()))
     }
 
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    fun myMessages(@Context sc: SecurityContext): Iterable<Message> {
+        return messageRepo.findAllByUser(sc.userPrincipal as User)
+    }
+    @GET
+    @Path("/since/{timestamp}")
+    @Produces(MediaType.APPLICATION_JSON)
+    fun since(@PathParam("timestamp") timestamp: Long, @Context sc: SecurityContext): Iterable<Message> {
+        return messageRepo.findAllSinceTimestamp(timestamp)
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    fun createMessage(message: RestMessage, @Context sc: SecurityContext): Response {
-        val msg = Message(text = message.text, author = sc.userPrincipal as User)
+    fun create(message: RestMessage, @Context sc: SecurityContext): Response {
+        val msg = Message(text = message.text, author = sc.userPrincipal as User, timestamp = System.currentTimeMillis())
         messageRepo.save(msg)
         return CREATED
     }
