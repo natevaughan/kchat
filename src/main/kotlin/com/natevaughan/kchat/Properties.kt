@@ -11,6 +11,9 @@ object server : PropertyGroup() {
     val host by stringType
     val port by intType
 }
-object datasource: PropertyGroup() {
-    val dbName by stringType
+object jdbc: PropertyGroup() {
+    val driver by stringType
+    val url by stringType
+    val user by stringType
+    val pass by stringType
 }

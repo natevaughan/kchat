@@ -37,6 +37,14 @@ fun main(args: Array<String>) {
             EnvironmentVariables() overriding
             ConfigurationProperties.fromResource("defaults.properties")
 
+    log.info("configuring datasource")
+
+    val dataSource = DataSourceBuilder()
+    dataSource.jdbcDriver = appConfig.get(jdbc.driver)
+    dataSource.jdbcUrl = appConfig.get(jdbc.url)
+    dataSource.jdbcUser = appConfig.get(jdbc.user)
+    dataSource.jdbcPass = appConfig.get(jdbc.pass)
+
     log.info("starting app configuration")
 
     val mapper = ObjectMapper()
