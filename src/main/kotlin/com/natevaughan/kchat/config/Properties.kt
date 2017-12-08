@@ -1,9 +1,10 @@
-package com.natevaughan.kchat
+package com.natevaughan.kchat.config
 
 import com.natpryce.konfig.PropertyGroup
 import com.natpryce.konfig.getValue
 import com.natpryce.konfig.intType
 import com.natpryce.konfig.stringType
+
 /**
  * Created by nate on 11/24/17
  */
@@ -16,4 +17,13 @@ object jdbc: PropertyGroup() {
     val url by stringType
     val user by stringType
     val pass by stringType
+}
+object admin: PropertyGroup() {
+    val name by stringType
+    val token by stringType
+}
+object default: PropertyGroup() {
+    object message: PropertyGroup() {
+        val count by stringType
+    }
 }

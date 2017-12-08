@@ -1,8 +1,8 @@
-package com.natevaughan.kchat.model.message.user
+package com.natevaughan.kchat.model.user
 
-import com.natevaughan.kchat.api.ApiKey
-import com.natevaughan.kchat.api.UnauthorizedException
+import com.natevaughan.kchat.UnauthorizedException
 import java.util.*
+import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
@@ -14,9 +14,13 @@ import javax.ws.rs.core.SecurityContext
  */
 @Singleton
 @Path("/user")
-class UserCtrl {
+class UserCtrl @Inject constructor(val userService: UserService) {
 
-    val userRepo: UserRepo = CacheUserRepo.getInstance()
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    fun echo(@Context sc: SecurityContext): User {
+        return sc.userPrincipal as User
+    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +30,9 @@ class UserCtrl {
             throw UnauthorizedException("Must have admin role")
         }
         val newUser = user.copy(apiKey = UUID.randomUUID().toString())
-        return ApiKey(userRepo.save(newUser).apiKey)
+        return ApiKey(userService.save(newUser).apiKey)
     }
+
 }
+
+class ApiKey(val apiKey: String)

@@ -1,6 +1,6 @@
 package com.natevaughan.kchat.model.message
 
-import com.natevaughan.kchat.model.message.user.User
+import com.natevaughan.kchat.model.user.User
 import java.util.concurrent.atomic.AtomicLong
 import javax.ws.rs.NotFoundException
 
@@ -13,9 +13,14 @@ class CacheMessageRepo : MessageRepo {
     val messages = mutableMapOf<Long, Message>()
 
     override fun save(entity: Message): Message {
-        val id = counter.incrementAndGet()
-        entity.id = id
-        messages.put(id, entity)
+        val id = entity.id
+        if (id == null) {
+            val newId = counter.incrementAndGet()
+            entity.id = newId
+            messages.put(newId, entity)
+        } else {
+            messages.put(id, entity)
+        }
         return entity
     }
 
@@ -28,14 +33,14 @@ class CacheMessageRepo : MessageRepo {
     }
 
     override fun findRecent(count: Int): Iterable<Message> {
-        return messages.values.sortedByDescending { it.timestamp }.take(count)
+        return messages.values.sortedBy { it.timestamp }.takeLast(count)
     }
 
-    override fun findById(id: Long): Message {
-        val msg = messages.get(id)
-        if (msg == null) {
-            throw NotFoundException()
-        }
-        return msg
+    override fun findById(id: Long): Message? {
+        return messages.get(id)
+    }
+
+    override fun delete(entity: Message): Boolean {
+        return messages.remove(entity.id) != null
     }
 }

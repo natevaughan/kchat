@@ -1,57 +1,13 @@
 package com.natevaughan.kchat.model.message
 
-import com.natevaughan.kchat.model.message.user.User
-import com.natevaughan.kchat.persistence.Identifieable
-import com.natevaughan.kchat.persistence.impl.EntityManagerContainer.entityManager
-import javax.persistence.criteria.Root
-
+import com.natevaughan.kchat.model.user.User
+import com.natevaughan.kchat.model.Repository
 /**
  * Created by nate on 11/23/17
  */
 
-interface MessageRepo: Identifieable<Message> {
+interface MessageRepo: Repository<Message> {
     fun findAllByUser(user: User): Iterable<Message>
     fun findAllSinceTimestamp(timestamp: Long): Iterable<Message>
     fun findRecent(count: Int): Iterable<Message>
-}
-
-class HibernateMessageRepo : MessageRepo {
-
-    override fun save(entity: Message): Message {
-        entityManager.transaction.begin()
-        entityManager.persist(entity)
-        entityManager.flush()
-        entityManager.transaction.commit()
-        return entity
-    }
-
-    override fun findAllByUser(user: User): Iterable<Message> {
-        val builder = entityManager.criteriaBuilder
-        val criteria = builder.createQuery(Message::class.java)
-        val messageRoot: Root<Message> = criteria.from(Message::class.java)
-        criteria.select(messageRoot)
-        val root = messageRoot.get( Message_.author )
-        val predicate = builder.equal(root, user)
-        criteria.where(predicate)
-        return entityManager.createQuery( criteria ).resultList
-    }
-
-    override fun findAllSinceTimestamp(timestamp: Long): Iterable<Message> {
-        val builder = entityManager.criteriaBuilder
-        val criteria = builder.createQuery(Message::class.java)
-        val messageRoot: Root<Message> = criteria.from(Message::class.java)
-        criteria.select(messageRoot)
-        val root = messageRoot.get( Message_.timestamp )
-        val predicate = builder.gt(root, timestamp)
-        criteria.where(predicate)
-        return entityManager.createQuery( criteria ).resultList
-    }
-
-    override fun findById(id: Long): Message {
-        throw NotImplementedError()
-    }
-
-    override fun findRecent(count: Int): Iterable<Message> {
-        throw NotImplementedError()
-    }
 }

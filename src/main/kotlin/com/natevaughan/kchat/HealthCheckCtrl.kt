@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.model.chat
+package com.natevaughan.kchat
 
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Singleton

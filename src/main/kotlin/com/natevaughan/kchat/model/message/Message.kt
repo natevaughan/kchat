@@ -1,6 +1,6 @@
 package com.natevaughan.kchat.model.message
 
-import com.natevaughan.kchat.model.message.user.User
+import com.natevaughan.kchat.model.user.User
 import javax.persistence.*
 import javax.persistence.metamodel.SingularAttribute
 import javax.persistence.metamodel.StaticMetamodel
@@ -10,11 +10,15 @@ import javax.persistence.metamodel.StaticMetamodel
  */
 
 @Entity
-data class Message(val text: String, val timestamp: Long, @ManyToOne val author: User) {
+data class Message(val text: String, val timestamp: Long, @ManyToOne val author: User): Comparable<Message> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     var id: Long? = null
+
+    override fun compareTo(other: Message): Int {
+        return (timestamp - other.timestamp).toInt()
+    }
 }
 
 // required for hibernate criteria queries

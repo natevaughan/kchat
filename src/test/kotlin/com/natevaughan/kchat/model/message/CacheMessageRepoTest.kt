@@ -21,9 +21,9 @@ class CacheMessageRepoTest {
     @Test
     fun testSave() {
         val message = buildValidMessage()
-        assertNull("message.id should be null before save", message.id)
+        assertNull("message.id should be null before update", message.id)
         repo.save(message)
-        assertNotNull("MessageRepo save should add an ID", message.id)
+        assertNotNull("MessageRepo update should add an ID", message.id)
     }
 
     @Test
@@ -62,5 +62,16 @@ class CacheMessageRepoTest {
         assertEquals("There should be 3 items", recent.count(), 3)
         assertFalse("The oldest should be left off", recent.contains(oldest))
         assertTrue("The newest should be included", recent.contains(newest))
+    }
+
+    @Test
+    fun testFindRecentTakeAll() {
+        val count = 3
+        for (i in 1..count) {
+            repo.save(buildValidMessage().copy(text = "msg" + i.toString(), timestamp = i.toLong()))
+        }
+
+        val recent = repo.findRecent(count + 10)
+        assertEquals("findRecent should only give the most recent $count", count, recent.count())
     }
 }

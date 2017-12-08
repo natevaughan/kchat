@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.model.message.user
+package com.natevaughan.kchat.model.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.security.Principal

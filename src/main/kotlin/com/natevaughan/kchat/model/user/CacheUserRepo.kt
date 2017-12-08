@@ -1,7 +1,11 @@
-package com.natevaughan.kchat.model.message.user
+package com.natevaughan.kchat.model.user
 
-import com.natevaughan.kchat.api.BadRequestException
-import com.natevaughan.kchat.api.UnauthorizedException
+import com.natevaughan.kchat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
+import com.natevaughan.kchat.config.admin
+import com.natevaughan.kchat.BadRequestException
+import com.natpryce.konfig.ConfigurationProperties
+import com.natpryce.konfig.EnvironmentVariables
+import com.natpryce.konfig.overriding
 import java.util.concurrent.atomic.AtomicLong
 import javax.ws.rs.NotFoundException
 
@@ -30,9 +34,17 @@ class CacheUserRepo private constructor() : UserRepo {
     val usersByName = mutableMapOf<String, User>()
 
     init {
-        val nate = User(name = "nate", role = Role.ADMIN, apiKey = "fafca0b3-8834-4bef-bad7-4d79aa9c9074")
-        usersByKey.put(nate.apiKey, nate)
-        usersByName.put(nate.name, nate)
+        val appConfig = ConfigurationProperties.systemProperties() overriding
+                EnvironmentVariables() overriding
+                ConfigurationProperties.fromResource(KEY_DEFAULT_PROPERTIES_FILE)
+
+        val admin = User(
+                name = appConfig.get(admin.name),
+                role = Role.ADMIN,
+                apiKey = appConfig.get(admin.token)
+        )
+        usersByKey.put(admin.apiKey, admin)
+        usersByName.put(admin.name, admin)
     }
 
     override fun save(entity: User): User {
@@ -45,12 +57,12 @@ class CacheUserRepo private constructor() : UserRepo {
         return entity
     }
 
-    override fun findByApiKey(key: String): User {
+    override fun findByApiKey(key: String): User? {
         val found = usersByKey.get(key)
         if (found != null) {
             return found
         }
-        throw UnauthorizedException("User not found")
+        return null
     }
 
     override fun findById(id: Long): User {
@@ -59,5 +71,9 @@ class CacheUserRepo private constructor() : UserRepo {
             return found.first()
         }
         throw NotFoundException("User not found")
+    }
+
+    override fun delete(entity: User): Boolean {
+        return usersByName.remove(entity.name) != null && usersByKey.remove(entity.apiKey) != null
     }
 }

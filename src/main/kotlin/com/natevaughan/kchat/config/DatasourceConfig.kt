@@ -1,4 +1,4 @@
-package com.natevaughan.kchat
+package com.natevaughan.kchat.config
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap
 import org.hibernate.jpa.HibernatePersistenceProvider
@@ -17,6 +17,8 @@ import javax.persistence.spi.PersistenceUnitInfo
 import javax.persistence.spi.PersistenceUnitTransactionType
 import javax.sql.DataSource
 
+
+
 /**
  * Created by nate on 11/23/17
  */
@@ -28,8 +30,9 @@ class DataSourceBuilder {
     var jdbcPass: String? = null
 
     fun entityManagerFactory(): EntityManagerFactory {
+
         return HibernatePersistenceProvider().createContainerEntityManagerFactory(
-            ArchiverPersistenceUnitInfo(),
+                ArchiverPersistenceUnitInfo(),
             ImmutableMap.Builder<String, Any>()
                     .put(JPA_JDBC_DRIVER, jdbcDriver)
                     .put(JPA_JDBC_URL, jdbcUrl)
@@ -51,8 +54,15 @@ class DataSourceBuilder {
 
 class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
 
+    override fun getManagedClassNames(): List<String> {
+        return listOf(
+            "com.natevaughan.kchat.model.message.Message",
+            "com.natevaughan.kchat.model.user.User"
+        )
+    }
+
     override fun getPersistenceUnitName(): String {
-        return "ApplicationPersistenceUnit"
+        return "KchatPersistence"
     }
 
     override fun getPersistenceProviderClassName(): String {
@@ -61,14 +71,6 @@ class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
 
     override fun getTransactionType(): PersistenceUnitTransactionType {
         return PersistenceUnitTransactionType.RESOURCE_LOCAL
-    }
-
-    override fun getJtaDataSource(): DataSource? {
-        return null
-    }
-
-    override fun getNonJtaDataSource(): DataSource? {
-        return null
     }
 
     override fun getMappingFileNames(): List<String> {
@@ -83,12 +85,20 @@ class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
         }
     }
 
-    override fun getPersistenceUnitRootUrl(): URL? {
+    override fun getProperties(): Properties {
+        return Properties()
+    }
+
+    override fun getJtaDataSource(): DataSource? {
         return null
     }
 
-    override fun getManagedClassNames(): List<String> {
-        return emptyList()
+    override fun getNonJtaDataSource(): DataSource? {
+        return null
+    }
+
+    override fun getPersistenceUnitRootUrl(): URL? {
+        return null
     }
 
     override fun excludeUnlistedClasses(): Boolean {
@@ -101,10 +111,6 @@ class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
 
     override fun getValidationMode(): ValidationMode? {
         return null
-    }
-
-    override fun getProperties(): Properties {
-        return Properties()
     }
 
     override fun getPersistenceXMLSchemaVersion(): String? {
