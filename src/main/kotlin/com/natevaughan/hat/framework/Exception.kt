@@ -1,9 +1,4 @@
-package com.natevaughan.kchat
-
-import javax.ws.rs.NotFoundException
-import javax.ws.rs.core.Response
-import javax.ws.rs.ext.ExceptionMapper
-import javax.ws.rs.ext.Provider
+package com.natevaughan.hat.framework
 
 /**
  * Created by nate on 11/22/17

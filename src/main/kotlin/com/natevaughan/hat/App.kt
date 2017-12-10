@@ -1,18 +1,18 @@
 @file:JvmName("App")
-package com.natevaughan.kchat
+package com.natevaughan.hat
 
 import com.google.inject.Guice
-import com.natevaughan.kchat.AppCompanion.log
+import com.natevaughan.hat.AppCompanion.log
 import org.slf4j.LoggerFactory
 import java.io.InputStreamReader
 import javax.ws.rs.core.UriBuilder
-import com.natevaughan.kchat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
-import com.natevaughan.kchat.config.ServiceModule
-import com.natevaughan.kchat.config.RestConfig
-import com.natevaughan.kchat.config.SecurityFilter
-import com.natevaughan.kchat.config.server
-import com.natevaughan.kchat.model.message.MessageCtrl
-import com.natevaughan.kchat.model.user.UserCtrl
+import com.natevaughan.hat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
+import com.natevaughan.hat.config.ServiceModule
+import com.natevaughan.hat.config.RestConfig
+import com.natevaughan.hat.config.SecurityFilter
+import com.natevaughan.hat.config.server
+import com.natevaughan.hat.message.MessageCtrl
+import com.natevaughan.hat.user.UserCtrl
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.overriding

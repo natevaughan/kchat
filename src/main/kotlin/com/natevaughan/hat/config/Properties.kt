@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.config
+package com.natevaughan.hat.config
 
 import com.natpryce.konfig.PropertyGroup
 import com.natpryce.konfig.getValue

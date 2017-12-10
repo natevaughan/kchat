@@ -1,4 +1,4 @@
-package com.natevaughan.kchat
+package com.natevaughan.hat.framework
 
 import javax.ws.rs.core.Response
 

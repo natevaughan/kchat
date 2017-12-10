@@ -1,6 +1,6 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
-import com.natevaughan.kchat.model.Repository
+import com.natevaughan.hat.framework.Repository
 
 /**
  * Created by nate on 11/23/17

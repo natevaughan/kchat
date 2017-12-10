@@ -1,8 +1,6 @@
-package com.natevaughan.kchat.model.message
+package com.natevaughan.hat.message
 
-import com.natevaughan.kchat.model.user.User
 import java.util.concurrent.atomic.AtomicLong
-import javax.ws.rs.NotFoundException
 
 /**
  * Created by nate on 11/23/17
@@ -22,10 +20,6 @@ class CacheMessageRepo : MessageRepo {
             messages.put(id, entity)
         }
         return entity
-    }
-
-    override fun findAllByUser(user: User): Iterable<Message> {
-        return messages.values.filter { it.author == user }
     }
 
     override fun findAllSinceTimestamp(timestamp: Long): Iterable<Message> {

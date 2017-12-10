@@ -1,7 +1,7 @@
-package com.natevaughan.kchat.model.message
+package com.natevaughan.hat.message
 
 import com.google.inject.Inject
-import com.natevaughan.kchat.model.user.User
+import com.natevaughan.hat.user.User
 import javax.ws.rs.NotFoundException
 
 /**
@@ -25,7 +25,7 @@ class MessageService @Inject constructor(val messageRepo: MessageRepo) {
         val old = findById(id)
         if (old != null) {
             checkAccess(old, user)
-            return messageRepo.save(old.copy(text = message.text))
+            return messageRepo.save(old.copy(text = message.text, lastEdited = System.currentTimeMillis()))
         }
         throw NotFoundException("Message ${id} not found for user ${user.id}")
     }

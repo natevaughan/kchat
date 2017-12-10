@@ -1,7 +1,7 @@
-package com.natevaughan.kchat.config
+package com.natevaughan.hat.config
 
-import com.natevaughan.kchat.UnauthorizedException
-import com.natevaughan.kchat.model.user.UserService
+import com.natevaughan.hat.framework.UnauthorizedException
+import com.natevaughan.hat.user.UserService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.ws.rs.NotFoundException
@@ -34,6 +34,9 @@ class SecurityFilter @Inject constructor(val userService: UserService) : Contain
                 return
             } catch (e: NotFoundException) {
             }
+        }
+        if (request.uriInfo.path == "health-check") {
+            return
         }
         log.warn("Unauthorized access attempted: ${request.headers}")
         throw UnauthorizedException("UserCtrl key not found or missing")

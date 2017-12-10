@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
 import com.google.inject.Inject
 import javax.ws.rs.NotFoundException

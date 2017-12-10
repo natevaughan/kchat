@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.config
+package com.natevaughan.hat.config
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap
 import org.hibernate.jpa.HibernatePersistenceProvider
@@ -56,8 +56,8 @@ class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
 
     override fun getManagedClassNames(): List<String> {
         return listOf(
-            "com.natevaughan.kchat.model.message.Message",
-            "com.natevaughan.kchat.model.user.User"
+            "com.natevaughan.hat.message.Message",
+            "com.natevaughan.hat.user.User"
         )
     }
 

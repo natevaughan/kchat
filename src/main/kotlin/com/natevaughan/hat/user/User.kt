@@ -1,4 +1,4 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.security.Principal
@@ -12,7 +12,6 @@ import javax.persistence.metamodel.StaticMetamodel
 /**
  * Created by nate on 11/23/17
  */
-
 @Entity
 data class User(private val name: String, val role: Role, @JsonIgnore val apiKey: String): Principal {
 
@@ -27,15 +26,3 @@ data class User(private val name: String, val role: Role, @JsonIgnore val apiKey
 }
 
 enum class Role { USER, ADMIN }
-
-
-// required for hibernate criteria queries
-@StaticMetamodel(User::class)
-object User_ {
-    @Volatile
-    var id: SingularAttribute<User, Long>? = null
-    @Volatile
-    var name: SingularAttribute<User, String>? = null
-    @Volatile
-    var apiKey: SingularAttribute<User, String>? = null
-}

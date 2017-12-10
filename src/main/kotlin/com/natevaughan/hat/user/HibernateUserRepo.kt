@@ -1,12 +1,14 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
-import com.natevaughan.kchat.config.admin
-import com.natevaughan.kchat.UnauthorizedException
+import com.natevaughan.hat.config.admin
+import com.natevaughan.hat.framework.UnauthorizedException
 import com.natpryce.konfig.Configuration
 import javax.inject.Inject
 import javax.persistence.EntityManagerFactory
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
+import javax.persistence.metamodel.SingularAttribute
+import javax.persistence.metamodel.StaticMetamodel
 
 /**
  * Created by nate on 12/2/17
@@ -73,4 +75,14 @@ class HibernateUserRepo @Inject constructor(appConfig: Configuration, val entity
         entityManager.transaction.commit()
         return true
     }
+}
+
+@StaticMetamodel(User::class)
+object User_ {
+    @Volatile
+    var id: SingularAttribute<User, Long>? = null
+    @Volatile
+    var name: SingularAttribute<User, String>? = null
+    @Volatile
+    var apiKey: SingularAttribute<User, String>? = null
 }

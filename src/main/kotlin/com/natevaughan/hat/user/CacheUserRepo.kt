@@ -1,8 +1,8 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
-import com.natevaughan.kchat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
-import com.natevaughan.kchat.config.admin
-import com.natevaughan.kchat.BadRequestException
+import com.natevaughan.hat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
+import com.natevaughan.hat.config.admin
+import com.natevaughan.hat.framework.BadRequestException
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.overriding
@@ -12,7 +12,6 @@ import javax.ws.rs.NotFoundException
 /**
  * Created by nate on 11/23/17
  */
-
 class CacheUserRepo private constructor() : UserRepo {
 
     companion object {

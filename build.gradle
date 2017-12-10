@@ -29,7 +29,7 @@ allprojects { project ->
 
 task fatJar(type: Jar, dependsOn: test) {
 	manifest {
-		attributes 'Main-Class':'com.natevaughan.kchat.App'
+		attributes 'Main-Class':'com.natevaughan.hat.App'
 	}
 	baseName = project.name + '-all'
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
@@ -47,11 +47,9 @@ dependencies {
 	compile 'com.natpryce:konfig:1.6.1.0'
 
     // rest
-//	compile "org.glassfish.jersey.containers:jersey-container-jdk-http:$jerseyVersion"
     compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http:$jerseyVersion"
     compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
 	compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
-//	compile "com.squarespace.jersey2-guice:jersey2-guice-impl:1.0.6"
 	// di
 	compile "com.google.inject:guice:4.1.0"
 

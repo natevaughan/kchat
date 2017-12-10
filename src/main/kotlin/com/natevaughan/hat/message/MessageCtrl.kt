@@ -1,8 +1,8 @@
-package com.natevaughan.kchat.model.message
+package com.natevaughan.hat.message
 
-import com.natevaughan.kchat.CREATED
-import com.natevaughan.kchat.OK
-import com.natevaughan.kchat.model.user.User
+import com.natevaughan.hat.framework.CREATED
+import com.natevaughan.hat.framework.OK
+import com.natevaughan.hat.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.*
@@ -17,6 +17,12 @@ import javax.ws.rs.core.SecurityContext
 @Singleton
 @Path("/message")
 class MessageCtrl @Inject constructor(val messageService: MessageService) {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    fun myMessages(@Context sc: SecurityContext): Iterable<Message> {
+        return messageService.findRecent(20)
+    }
 
     @GET
     @Path("/{id}")
@@ -51,12 +57,6 @@ class MessageCtrl @Inject constructor(val messageService: MessageService) {
     fun deleteMessage(@PathParam("id") id: Long, @Context sc: SecurityContext): Response {
         messageService.delete(id, sc.userPrincipal as User)
         return OK
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    fun myMessages(@Context sc: SecurityContext): Iterable<Message> {
-        return messageService.findRecent(20)
     }
 
     @GET

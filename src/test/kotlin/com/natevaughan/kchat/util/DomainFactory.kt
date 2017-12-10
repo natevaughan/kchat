@@ -1,8 +1,8 @@
 package com.natevaughan.kchat.util
 
-import com.natevaughan.kchat.model.message.Message
-import com.natevaughan.kchat.model.user.Role
-import com.natevaughan.kchat.model.user.User
+import com.natevaughan.hat.message.Message
+import com.natevaughan.hat.user.Role
+import com.natevaughan.hat.user.User
 
 /**
  * Created by nate on 11/24/17

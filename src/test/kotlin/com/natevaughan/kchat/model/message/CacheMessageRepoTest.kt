@@ -1,5 +1,6 @@
 package com.natevaughan.kchat.model.message
 
+import com.natevaughan.hat.message.CacheMessageRepo
 import com.natevaughan.kchat.util.DomainFactory.buildValidMessage
 import org.junit.Assert.*
 import org.junit.Before

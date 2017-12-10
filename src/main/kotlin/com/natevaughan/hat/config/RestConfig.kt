@@ -1,16 +1,17 @@
-package com.natevaughan.kchat.config
+package com.natevaughan.hat.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.natevaughan.kchat.BAD_REQUEST
-import com.natevaughan.kchat.CustomException
-import com.natevaughan.kchat.INTERNAL_SERVER_ERROR
-import com.natevaughan.kchat.NOT_FOUND
-import com.natevaughan.kchat.UNAUTHORIZED
-import com.natevaughan.kchat.UnauthorizedException
-import com.natevaughan.kchat.model.user.User
+import com.natevaughan.hat.framework.BAD_REQUEST
+import com.natevaughan.hat.framework.CustomException
+import com.natevaughan.hat.framework.INTERNAL_SERVER_ERROR
+import com.natevaughan.hat.framework.NOT_FOUND
+import com.natevaughan.hat.framework.UNAUTHORIZED
+import com.natevaughan.hat.framework.UnauthorizedException
+import com.natevaughan.hat.framework.UtilityCtrl
+import com.natevaughan.hat.user.User
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import java.security.Principal
@@ -39,6 +40,7 @@ class RestConfig : ResourceConfig() {
         register(JacksonFeature::class.java)
         register(PoweredByResponseFilter::class.java)
         register(ExceptionHandler::class.java)
+        register(UtilityCtrl::class.java)
     }
 
 }

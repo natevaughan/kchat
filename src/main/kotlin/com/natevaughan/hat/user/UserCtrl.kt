@@ -1,6 +1,6 @@
-package com.natevaughan.kchat.model.user
+package com.natevaughan.hat.user
 
-import com.natevaughan.kchat.UnauthorizedException
+import com.natevaughan.hat.framework.UnauthorizedException
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton

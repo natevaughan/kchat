@@ -1,15 +1,15 @@
-package com.natevaughan.kchat.config
+package com.natevaughan.hat.config
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
-import com.natevaughan.kchat.model.message.HibernateMessageRepo
-import com.natevaughan.kchat.model.message.MessageCtrl
-import com.natevaughan.kchat.model.message.MessageRepo
-import com.natevaughan.kchat.model.message.MessageService
-import com.natevaughan.kchat.model.user.HibernateUserRepo
-import com.natevaughan.kchat.model.user.UserCtrl
-import com.natevaughan.kchat.model.user.UserRepo
-import com.natevaughan.kchat.model.user.UserService
+import com.natevaughan.hat.message.HibernateMessageRepo
+import com.natevaughan.hat.message.MessageCtrl
+import com.natevaughan.hat.message.MessageRepo
+import com.natevaughan.hat.message.MessageService
+import com.natevaughan.hat.user.HibernateUserRepo
+import com.natevaughan.hat.user.UserCtrl
+import com.natevaughan.hat.user.UserRepo
+import com.natevaughan.hat.user.UserService
 import com.natpryce.konfig.Configuration
 import javax.persistence.EntityManagerFactory
 
