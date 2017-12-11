@@ -13,7 +13,11 @@ import javax.persistence.metamodel.StaticMetamodel
  * Created by nate on 11/23/17
  */
 @Entity
-data class User(private val name: String, val role: Role, @JsonIgnore val apiKey: String): Principal {
+data class User(
+        private val name: String,
+        @JsonIgnore val role: Role,
+        @JsonIgnore val apiKey: String
+): Principal {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

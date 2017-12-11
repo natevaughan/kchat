@@ -40,7 +40,7 @@ class DataSourceBuilder {
                     .put(JPA_JDBC_PASSWORD, jdbcPass)
                     .put(DIALECT, MySQL57Dialect::class.java)
                     .put(SHOW_SQL, false)
-                    .put(HBM2DDL_AUTO, Action.CREATE_DROP)
+                    .put(HBM2DDL_AUTO, Action.NONE)
                     .put(QUERY_STARTUP_CHECKING, true)
                     .put(GENERATE_STATISTICS, false)
                     .put(USE_REFLECTION_OPTIMIZER, false)

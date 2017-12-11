@@ -5,7 +5,6 @@ import com.google.inject.Provides
 import com.natevaughan.hat.HatCtrl
 import com.natevaughan.hat.HatRepo
 import com.natevaughan.hat.HatService
-import com.natevaughan.hat.HatServiceImpl
 import com.natevaughan.hat.HibernateHatRepo
 import com.natevaughan.hat.message.HibernateMessageRepo
 import com.natevaughan.hat.message.MessageCtrl
@@ -33,7 +32,7 @@ class ServiceModule(val appConfig: Configuration) : AbstractModule() {
         bind(MessageRepo::class.java).to(HibernateMessageRepo::class.java)
 
         bind(HatCtrl::class.java)
-        bind(HatService::class.java).to(HatServiceImpl::class.java)
+        bind(HatService::class.java)
         bind(HatRepo::class.java).to(HibernateHatRepo::class.java)
 
         bind(SecurityFilter::class.java)

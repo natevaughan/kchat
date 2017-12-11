@@ -10,17 +10,10 @@ import javax.ws.rs.NotFoundException
 /**
  * Created by nate on 12/9/17
  */
-interface HatService {
-    fun listForUser(user: User): Collection<Hat>
-    fun findById(id: Long, user: User): Hat
-    fun create(name: String, user: User, participantIds: Collection<Long>): Hat
-    fun delete(id: Long, user: User)
-}
-
-class HatServiceImpl @Inject constructor(val hatRepo: HatRepo, val userService: UserService) {
+open class HatService @Inject constructor(val hatRepo: HatRepo, val userService: UserService) {
 
     fun listForUser(user: User): Collection<Hat> {
-        return hatRepo.listForUser(user)
+        return hatRepo.listForUser(user).toCollection(TreeSet())
     }
 
     fun findById(id: Long, user: User): Hat {

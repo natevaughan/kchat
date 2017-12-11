@@ -17,8 +17,13 @@ class Hat(
         val accessKey: String,
         @ManyToOne val creator: User,
         @ManyToMany val participants: Collection<User> = setOf()
-){
+): Comparable<Hat> {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     val id: Long? = null
+
+    override fun compareTo(other: Hat): Int {
+        return this.name.compareTo(other.name)
+    }
 }
