@@ -39,8 +39,8 @@ class DataSourceBuilder {
                     .put(JPA_JDBC_USER, jdbcUser)
                     .put(JPA_JDBC_PASSWORD, jdbcPass)
                     .put(DIALECT, MySQL57Dialect::class.java)
-                    .put(HBM2DDL_AUTO, Action.UPDATE)
                     .put(SHOW_SQL, false)
+                    .put(HBM2DDL_AUTO, Action.CREATE_DROP)
                     .put(QUERY_STARTUP_CHECKING, true)
                     .put(GENERATE_STATISTICS, false)
                     .put(USE_REFLECTION_OPTIMIZER, false)
@@ -56,6 +56,7 @@ class ArchiverPersistenceUnitInfo: PersistenceUnitInfo {
 
     override fun getManagedClassNames(): List<String> {
         return listOf(
+            "com.natevaughan.hat.Hat",
             "com.natevaughan.hat.message.Message",
             "com.natevaughan.hat.user.User"
         )

@@ -1,6 +1,6 @@
 package com.natevaughan.hat.user
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import javax.ws.rs.NotFoundException
 
 /**

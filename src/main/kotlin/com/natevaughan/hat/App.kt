@@ -40,6 +40,7 @@ fun main(args: Array<String>) {
     val injector = Guice.createInjector(ServiceModule(appConfig))
 
     val rc = RestConfig()
+    rc.register(injector.getInstance(HatCtrl::class.java))
     rc.register(injector.getInstance(UserCtrl::class.java))
     rc.register(injector.getInstance(MessageCtrl::class.java))
     rc.register(injector.getInstance(SecurityFilter::class.java))

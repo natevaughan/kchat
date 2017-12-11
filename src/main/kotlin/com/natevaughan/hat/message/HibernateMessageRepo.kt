@@ -1,5 +1,6 @@
 package com.natevaughan.hat.message
 
+import com.natevaughan.hat.Hat
 import com.natevaughan.hat.user.User
 import java.util.TreeSet
 import javax.inject.Inject
@@ -32,17 +33,6 @@ class HibernateMessageRepo @Inject constructor(val entityManagerFactory: EntityM
         return entity
     }
 
-    override fun findAllSinceTimestamp(timestamp: Long): Iterable<Message> {
-        val entityManager = entityManagerFactory.createEntityManager()
-        val builder = entityManager.criteriaBuilder
-        val criteria = builder.createQuery(Message::class.java)
-        val messageRoot: Root<Message> = criteria.from(Message::class.java)
-        criteria.select(messageRoot)
-        val root = messageRoot.get(Message_.timestamp)
-        val predicate = builder.gt(root, timestamp)
-        criteria.where(predicate)
-        return entityManager.createQuery( criteria ).resultList.toCollection(TreeSet<Message>())
-    }
 
     override fun findById(id: Long): Message? {
         val entityManager = entityManagerFactory.createEntityManager()
@@ -51,7 +41,7 @@ class HibernateMessageRepo @Inject constructor(val entityManagerFactory: EntityM
         val messageRoot: Root<Message> = criteria.from(Message::class.java)
         criteria.select(messageRoot)
         val root = messageRoot.get(Message_.id)
-        val predicate = builder.gt(root, id)
+        val predicate = builder.equal(root, id)
         criteria.where(predicate)
         try {
             return entityManager.createQuery( criteria ).singleResult
@@ -60,12 +50,28 @@ class HibernateMessageRepo @Inject constructor(val entityManagerFactory: EntityM
         }
     }
 
-    override fun findRecent(count: Int): Iterable<Message> {
+    override fun findForHatSinceTimestamp(hat: Hat, timestamp: Long): Iterable<Message> {
         val entityManager = entityManagerFactory.createEntityManager()
         val builder = entityManager.criteriaBuilder
         val criteria = builder.createQuery(Message::class.java)
         val messageRoot: Root<Message> = criteria.from(Message::class.java)
-        criteria.select(messageRoot).orderBy(builder.desc(messageRoot.get(Message_.id)))
+        criteria.select(messageRoot)
+        val timestampPath = messageRoot.get(Message_.timestamp)
+        val timestampPredicate = builder.gt(timestampPath, timestamp)
+        val hatPath = messageRoot.get(Message_.hat)
+        val hatPredicate = builder.equal(hatPath, hat)
+        criteria.where(timestampPredicate, hatPredicate)
+        return entityManager.createQuery( criteria ).resultList.toCollection(TreeSet<Message>())
+    }
+
+    override fun findRecent(hat: Hat, count: Int): Iterable<Message> {
+        val entityManager = entityManagerFactory.createEntityManager()
+        val builder = entityManager.criteriaBuilder
+        val criteria = builder.createQuery(Message::class.java)
+        val messageRoot: Root<Message> = criteria.from(Message::class.java)
+        val hatPath = messageRoot.get(Message_.hat)
+        val hatPredicate = builder.equal(hatPath, hat)
+        criteria.select(messageRoot).where(hatPredicate).orderBy(builder.desc(messageRoot.get(Message_.id)))
         return entityManager.createQuery( criteria ).setMaxResults(count).resultList.toCollection(TreeSet<Message>())
     }
 }
@@ -79,4 +85,6 @@ object Message_ {
     var author: SingularAttribute<Message, User>? = null
     @Volatile
     var timestamp: SingularAttribute<Message, Long>? = null
+    @Volatile
+    var hat: SingularAttribute<Message, Hat>? = null
 }

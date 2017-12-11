@@ -1,31 +1,35 @@
 package com.natevaughan.hat.message
 
-import com.google.inject.Inject
+import com.natevaughan.hat.HatService
+import javax.inject.Inject
 import com.natevaughan.hat.user.User
 import javax.ws.rs.NotFoundException
 
 /**
  * Created by nate on 12/3/17
  */
-class MessageService @Inject constructor(val messageRepo: MessageRepo) {
+class MessageService @Inject constructor(val messageRepo: MessageRepo, val hatService: HatService) {
 
-    fun findAllSinceTimestamp(timestamp: Long): Iterable<Message> {
-        return messageRepo.findAllSinceTimestamp(timestamp)
+    fun findAllSinceTimestamp(hatId: Long, timestamp: Long, user: User): Iterable<Message> {
+        val hat = hatService.findById(hatId, user)
+        return messageRepo.findForHatSinceTimestamp(hat, timestamp)
     }
 
-    fun findRecent(count: Int): Iterable<Message> {
-        return messageRepo.findRecent(count)
+    fun findRecent(hatId: Long, count: Int, user: User): Iterable<Message> {
+        val hat = hatService.findById(hatId, user)
+        return messageRepo.findRecent(hat, count)
     }
 
-    fun create(message: Message): Message {
-        return messageRepo.save(message)
+    fun create(text: String, hatId: Long, user: User): Message {
+        val hat = hatService.findById(hatId, user)
+        return messageRepo.save(Message(text, System.currentTimeMillis(), user, hat))
     }
 
-    fun update(message: Message, id: Long, user: User): Message {
+    fun update(text: String, id: Long, user: User): Message {
         val old = findById(id)
         if (old != null) {
             checkAccess(old, user)
-            return messageRepo.save(old.copy(text = message.text, lastEdited = System.currentTimeMillis()))
+            return messageRepo.save(old.copy(text = text, lastEdited = System.currentTimeMillis()))
         }
         throw NotFoundException("Message ${id} not found for user ${user.id}")
     }

@@ -13,7 +13,7 @@ import javax.ws.rs.core.SecurityContext
  * Created by nate on 11/22/17
  */
 @Singleton
-@Path("/user")
+@Path("user")
 class UserCtrl @Inject constructor(val userService: UserService) {
 
     @GET
@@ -27,7 +27,7 @@ class UserCtrl @Inject constructor(val userService: UserService) {
     fun createUser(user: User, @Context sc: SecurityContext): ApiKey {
         val requester = sc.userPrincipal as User
         if (requester.role != Role.ADMIN) {
-            throw UnauthorizedException("Must have admin role")
+            throw UnauthorizedException("Must have creator role")
         }
         val newUser = user.copy(apiKey = UUID.randomUUID().toString())
         return ApiKey(userService.save(newUser).apiKey)

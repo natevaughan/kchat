@@ -39,6 +39,6 @@ class SecurityFilter @Inject constructor(val userService: UserService) : Contain
             return
         }
         log.warn("Unauthorized access attempted: ${request.headers}")
-        throw UnauthorizedException("UserCtrl key not found or missing")
+        throw UnauthorizedException("UserCtrl accessKey not found or missing")
     }
 }
