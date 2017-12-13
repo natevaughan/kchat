@@ -23,7 +23,7 @@ data class Message(
 ): Comparable<Message> {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     var id: Long? = null
 
     override fun compareTo(other: Message): Int {

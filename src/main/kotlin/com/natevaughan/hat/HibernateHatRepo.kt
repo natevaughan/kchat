@@ -4,7 +4,6 @@ import com.natevaughan.hat.user.User
 import javax.inject.Inject
 import javax.persistence.EntityManagerFactory
 import javax.persistence.NoResultException
-import javax.persistence.criteria.Root
 import javax.persistence.metamodel.SetAttribute
 import javax.persistence.metamodel.SingularAttribute
 import javax.persistence.metamodel.StaticMetamodel
@@ -16,15 +15,17 @@ class HibernateHatRepo @Inject constructor(val entityManagerFactory: EntityManag
 
     override fun findByKey(key: String): Hat? {
         val entityManager = entityManagerFactory.createEntityManager()
-        val builder = entityManager.criteriaBuilder
-        val criteria = builder.createQuery(Hat::class.java)
-        val messageRoot: Root<Hat> = criteria.from(Hat::class.java)
-        criteria.select(messageRoot)
-        val root = messageRoot.get(Hat_.accessKey)
-        val predicate = builder.equal(root, key)
-        criteria.where(predicate)
+//        val builder = entityManager.criteriaBuilder
+//        val criteria = builder.createQuery(Hat::class.java)
+//        val messageRoot: Root<Hat> = criteria.from(Hat::class.java)
+//        criteria.select(messageRoot)
+//        val root = messageRoot.get(Hat_.accessKey)
+//        val predicate = builder.equal(root, key)
+//        criteria.where(predicate)
+        val query = "from Hat where accessKey = :key"
         try {
-            return entityManager.createQuery( criteria ).singleResult
+            return entityManager.createQuery(query).setParameter("accessKey", key).singleResult as Hat
+//            return entityManager.createQuery( criteria ).singleResult
         } catch (e: NoResultException) {
             return null
         }
@@ -46,15 +47,17 @@ class HibernateHatRepo @Inject constructor(val entityManagerFactory: EntityManag
 
     override fun findById(id: Long): Hat? {
         val entityManager = entityManagerFactory.createEntityManager()
-        val builder = entityManager.criteriaBuilder
-        val criteria = builder.createQuery(Hat::class.java)
-        val messageRoot: Root<Hat> = criteria.from(Hat::class.java)
-        criteria.select(messageRoot)
-        val root = messageRoot.get(Hat_.id)
-        val predicate = builder.equal(root, id)
-        criteria.where(predicate)
+//        val builder = entityManager.criteriaBuilder
+//        val criteria = builder.createQuery(Hat::class.java)
+//        val messageRoot: Root<Hat> = criteria.from(Hat::class.java)
+//        criteria.select(messageRoot)
+//        val root = messageRoot.get(Hat_.id)
+//        val predicate = builder.equal(root, id)
+//        criteria.where(predicate)
+        val query = "from Hat h where id = :id"
         try {
-            return entityManager.createQuery( criteria ).singleResult
+            return entityManager.createQuery(query).setParameter("id", id).singleResult as Hat
+//            return entityManager.createQuery( criteria ).singleResult
         } catch (e: NoResultException) {
             return null
         }

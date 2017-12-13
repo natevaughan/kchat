@@ -1,9 +1,23 @@
 package com.natevaughan.hat.config
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap
-import org.hibernate.jpa.HibernatePersistenceProvider
-import org.hibernate.cfg.AvailableSettings.*
+import org.hibernate.cfg.AvailableSettings.DIALECT
+import org.hibernate.cfg.AvailableSettings.GENERATE_STATISTICS
+import org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO
+import org.hibernate.cfg.AvailableSettings.JPA_JDBC_DRIVER
+import org.hibernate.cfg.AvailableSettings.JPA_JDBC_PASSWORD
+import org.hibernate.cfg.AvailableSettings.JPA_JDBC_URL
+import org.hibernate.cfg.AvailableSettings.JPA_JDBC_USER
+import org.hibernate.cfg.AvailableSettings.POOL_SIZE
+import org.hibernate.cfg.AvailableSettings.QUERY_STARTUP_CHECKING
+import org.hibernate.cfg.AvailableSettings.SHOW_SQL
+import org.hibernate.cfg.AvailableSettings.STATEMENT_BATCH_SIZE
+import org.hibernate.cfg.AvailableSettings.USE_QUERY_CACHE
+import org.hibernate.cfg.AvailableSettings.USE_REFLECTION_OPTIMIZER
+import org.hibernate.cfg.AvailableSettings.USE_SECOND_LEVEL_CACHE
+import org.hibernate.cfg.AvailableSettings.USE_STRUCTURED_CACHE
 import org.hibernate.dialect.MySQL57Dialect
+import org.hibernate.jpa.HibernatePersistenceProvider
 import org.hibernate.tool.schema.Action
 import java.io.IOException
 import java.io.UncheckedIOException
@@ -18,37 +32,28 @@ import javax.persistence.spi.PersistenceUnitTransactionType
 import javax.sql.DataSource
 
 
-
 /**
  * Created by nate on 11/23/17
  */
-class DataSourceBuilder {
+class DataSourceBuilder : ImmutableMap.Builder<String, Any>() {
 
-    var jdbcDriver: String? = null
-    var jdbcUrl: String? = null
-    var jdbcUser: String? = null
-    var jdbcPass: String? = null
+    init {
+        put(DIALECT, MySQL57Dialect::class.java)
+        put(SHOW_SQL, false)
+        put(HBM2DDL_AUTO, Action.NONE)
+        put(QUERY_STARTUP_CHECKING, true)
+        put(GENERATE_STATISTICS, false)
+        put(USE_REFLECTION_OPTIMIZER, false)
+        put(USE_SECOND_LEVEL_CACHE, false)
+        put(USE_QUERY_CACHE, false)
+        put(USE_STRUCTURED_CACHE, false)
+        put(STATEMENT_BATCH_SIZE, 20)
+    }
 
     fun entityManagerFactory(): EntityManagerFactory {
-
         return HibernatePersistenceProvider().createContainerEntityManagerFactory(
                 ArchiverPersistenceUnitInfo(),
-            ImmutableMap.Builder<String, Any>()
-                    .put(JPA_JDBC_DRIVER, jdbcDriver)
-                    .put(JPA_JDBC_URL, jdbcUrl)
-                    .put(JPA_JDBC_USER, jdbcUser)
-                    .put(JPA_JDBC_PASSWORD, jdbcPass)
-                    .put(DIALECT, MySQL57Dialect::class.java)
-                    .put(SHOW_SQL, false)
-                    .put(HBM2DDL_AUTO, Action.NONE)
-                    .put(QUERY_STARTUP_CHECKING, true)
-                    .put(GENERATE_STATISTICS, false)
-                    .put(USE_REFLECTION_OPTIMIZER, false)
-                    .put(USE_SECOND_LEVEL_CACHE, false)
-                    .put(USE_QUERY_CACHE, false)
-                    .put(USE_STRUCTURED_CACHE, false)
-                    .put(STATEMENT_BATCH_SIZE, 20)
-                    .build())
+                    build())
     }
 }
 

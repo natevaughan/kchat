@@ -6,8 +6,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.metamodel.SingularAttribute
-import javax.persistence.metamodel.StaticMetamodel
 
 /**
  * Created by nate on 11/23/17
@@ -20,7 +18,7 @@ data class User(
 ): Principal {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     var id: Long? = null
 
     // necessary for explicit override of Principal.getName()

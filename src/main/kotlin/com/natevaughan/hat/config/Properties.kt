@@ -17,6 +17,7 @@ object jdbc: PropertyGroup() {
     val url by stringType
     val user by stringType
     val pass by stringType
+    val pool by intType
 }
 object admin: PropertyGroup() {
     val name by stringType

@@ -1,8 +1,8 @@
 package com.natevaughan.hat.message
 
 import com.natevaughan.hat.HatService
-import javax.inject.Inject
 import com.natevaughan.hat.user.User
+import javax.inject.Inject
 import javax.ws.rs.NotFoundException
 
 /**

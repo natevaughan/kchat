@@ -15,12 +15,23 @@ import com.natevaughan.hat.user.UserCtrl
 import com.natevaughan.hat.user.UserRepo
 import com.natevaughan.hat.user.UserService
 import com.natpryce.konfig.Configuration
+import org.hibernate.cfg.AvailableSettings.*
 import javax.persistence.EntityManagerFactory
 
 /**
  * Created by nate on 11/26/17
  */
 class ServiceModule(val appConfig: Configuration) : AbstractModule() {
+
+    val dataSource = DataSourceBuilder()
+
+    init {
+        dataSource.put(JPA_JDBC_DRIVER, appConfig.get(jdbc.driver))
+                .put(JPA_JDBC_URL, appConfig.get(jdbc.url))
+                .put(JPA_JDBC_USER, appConfig.get(jdbc.user))
+                .put(JPA_JDBC_PASSWORD, appConfig.get(jdbc.pass))
+                .put(POOL_SIZE, appConfig.get(jdbc.pool))
+    }
 
     override fun configure() {
         bind(UserCtrl::class.java)
@@ -40,13 +51,6 @@ class ServiceModule(val appConfig: Configuration) : AbstractModule() {
 
     @Provides
     fun provideEntityManager(): EntityManagerFactory {
-        val dataSource = DataSourceBuilder()
-        dataSource.jdbcDriver = appConfig.get(jdbc.driver)
-        dataSource.jdbcUrl = appConfig.get(jdbc.url)
-        dataSource.jdbcUser = appConfig.get(jdbc.user)
-        dataSource.jdbcPass = appConfig.get(jdbc.pass)
-        dataSource.entityManagerFactory()
-
         return dataSource.entityManagerFactory()
     }
 
