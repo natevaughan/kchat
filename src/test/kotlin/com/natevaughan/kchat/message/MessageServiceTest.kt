@@ -1,8 +1,7 @@
 package com.natevaughan.kchat.message
 
-import com.natevaughan.hat.HatService
-import com.natevaughan.hat.message.MessageRepo
-import com.natevaughan.hat.message.MessageService
+import com.natevaughan.kchat.ChatService
+import com.natevaughan.kchat.api.MessageRepo
 import com.natevaughan.kchat.util.DomainFactory.buildValidMessage
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -24,7 +23,7 @@ class MessageServiceTest {
         val user = message.author
 
         val messageRepo = mock(MessageRepo::class.java)
-        val hatService = mock(HatService::class.java)
+        val hatService = mock(ChatService::class.java)
         val messageService = MessageService(messageRepo, hatService)
 
         `when`(messageRepo.findById(id)).thenReturn(message)
@@ -42,7 +41,7 @@ class MessageServiceTest {
         val user = message.author
 
         val messageRepo = mock(MessageRepo::class.java)
-        val hatService = mock(HatService::class.java)
+        val hatService = mock(ChatService::class.java)
         val messageService = MessageService(messageRepo, hatService)
 
         messageService.delete(id, user)
