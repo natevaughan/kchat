@@ -2,12 +2,11 @@ package com.natevaughan.kchat
 
 import com.natevaughan.kchat.api.Chat
 import com.natevaughan.kchat.api.ChatRepo
-import com.natevaughan.kchat.framework.UnauthorizedException
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.domain.ChatEntity
-import com.natevaughan.kchat.domain.UserEntity
+import com.natevaughan.kchat.framework.UnauthorizedException
 import com.natevaughan.kchat.user.UserService
-import java.util.*
+import java.util.TreeSet
+import java.util.UUID
 import javax.inject.Inject
 import javax.ws.rs.NotFoundException
 
@@ -31,12 +30,9 @@ open class ChatService @Inject constructor(val hatRepo: ChatRepo, val userServic
     }
 
     fun create(name: String, user: User, participantIds: Collection<Long>): Chat {
-        val participants = participantIds.map { userService.findById(it) as UserEntity }
+        val participants = participantIds.map { userService.findById(it) }
         val key = UUID.randomUUID().toString()
-        if (user is UserEntity) {
-            return hatRepo.save(ChatEntity(name, key, user, participants))
-        }
-        throw Exception("error creating chat")
+        return hatRepo.save(Chat(name, key, user, participants))
     }
 
     fun delete(id: Long, user: User) {

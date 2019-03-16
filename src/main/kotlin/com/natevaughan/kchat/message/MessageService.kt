@@ -4,9 +4,7 @@ import com.natevaughan.kchat.ChatService
 import com.natevaughan.kchat.api.Message
 import com.natevaughan.kchat.api.MessageRepo
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.domain.ChatEntity
-import com.natevaughan.kchat.domain.MessageEntity
-import com.natevaughan.kchat.domain.UserEntity
+import java.time.Instant
 import javax.inject.Inject
 import javax.ws.rs.NotFoundException
 
@@ -17,7 +15,7 @@ class MessageService @Inject constructor(val messageRepo: MessageRepo, val hatSe
 
     fun findAllSinceTimestamp(hatId: Long, timestamp: Long, user: User): Iterable<Message> {
         val hat = hatService.findById(hatId, user)
-        return messageRepo.findForHatSinceTimestamp(hat, timestamp)
+        return messageRepo.findForChatSinceTimestamp(hat, Instant.ofEpochMilli(timestamp))
     }
 
     fun findRecent(hatId: Long, count: Int, user: User): Iterable<Message> {
@@ -27,18 +25,15 @@ class MessageService @Inject constructor(val messageRepo: MessageRepo, val hatSe
 
     fun create(text: String, hatId: Long, user: User): Message {
         val hat = hatService.findById(hatId, user)
-		if (hat is ChatEntity && user is UserEntity) {
-			val message = MessageEntity(text, System.currentTimeMillis(), user, hat)
-        	return messageRepo.save(message)
-		}
-		throw Exception("error saving message")
+        val message = Message(text, user, hat)
+        return messageRepo.save(message)
     }
 
     fun update(text: String, id: Long, user: User): Message {
         val old = findById(id)
         if (old != null) {
             checkAccess(old, user)
-            return messageRepo.save(old.copy(text, System.currentTimeMillis()))
+            return messageRepo.save(old.copy(text))
         }
         throw NotFoundException("MessageEntity ${id} not found for user ${user.id}")
     }

@@ -7,3 +7,4 @@ out
 *.iml
 build
 scripts
+modules/domain/jooq

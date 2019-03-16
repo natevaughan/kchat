@@ -1,9 +1,8 @@
 package com.natevaughan.kchat.user
 
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.domain.UserEntity
 import com.natevaughan.kchat.framework.UnauthorizedException
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.GET
@@ -34,7 +33,7 @@ class UserCtrl @Inject constructor(val userService: UserService) {
         if (requester.role != User.Role.ADMIN) {
             throw UnauthorizedException("Must have creator role")
         }
-        val newUser = (user as UserEntity).copy(apiKey = UUID.randomUUID().toString())
+        val newUser = user.copy(UUID.randomUUID().toString())
         return ApiKey(userService.save(newUser).apiKey)
     }
 }

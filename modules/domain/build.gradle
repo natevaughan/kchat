@@ -9,8 +9,10 @@ dependencies {
 	compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
 	compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
 
-
 	// persistence
-	compile 'org.hibernate:hibernate-core:5.2.12.Final'
-	compile 'mysql:mysql-connector-java:6.0.6'
+	compile 'org.jooq:jooq:3.11.10'
+	compile 'org.jooq:jooq-meta:3.11.10'
+	compile 'org.jooq:jooq-codegen:3.11.10'
+	compile 'mysql:mysql-connector-java:8.0.15'
+	compile 'com.zaxxer:HikariCP:2.7.8'
 }

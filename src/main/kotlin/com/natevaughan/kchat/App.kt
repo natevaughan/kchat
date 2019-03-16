@@ -1,6 +1,7 @@
 @file:JvmName("App")
 package com.natevaughan.kchat
 
+//import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory
 import com.google.inject.Guice
 import com.natevaughan.kchat.AppCompanion.KEY_DEFAULT_PROPERTIES_FILE
 import com.natevaughan.kchat.AppCompanion.log
@@ -11,14 +12,12 @@ import com.natevaughan.kchat.config.SecurityFilter
 import com.natevaughan.kchat.config.ServiceModule
 import com.natevaughan.kchat.config.admin
 import com.natevaughan.kchat.config.server
-import com.natevaughan.kchat.domain.UserEntity
 import com.natevaughan.kchat.message.MessageCtrl
 import com.natevaughan.kchat.user.UserCtrl
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.overriding
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory
-//import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory
 import org.slf4j.LoggerFactory
 import java.io.InputStreamReader
 import javax.ws.rs.core.UriBuilder
@@ -49,10 +48,10 @@ fun main(args: Array<String>) {
     val existingAdmin = userRepo.findByApiKey(appConfig.get(admin.token))
 
     if (existingAdmin == null) {
-        val admin = UserEntity(
-                name = appConfig.get(admin.name),
-                role = User.Role.ADMIN,
-                apiKey = appConfig.get(admin.token)
+        val admin = User(
+                appConfig.get(admin.name),
+                User.Role.ADMIN,
+                appConfig.get(admin.token)
         )
         userRepo.save(admin)
     }
