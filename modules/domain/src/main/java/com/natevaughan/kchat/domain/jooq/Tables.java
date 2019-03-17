@@ -5,7 +5,7 @@ package com.natevaughan.kchat.domain.jooq;
 
 
 import com.natevaughan.kchat.domain.jooq.tables.Chat;
-import com.natevaughan.kchat.domain.jooq.tables.KchatUser;
+import com.natevaughan.kchat.domain.jooq.tables.ChatUser;
 import com.natevaughan.kchat.domain.jooq.tables.Message;
 import com.natevaughan.kchat.domain.jooq.tables.User;
 
@@ -31,9 +31,9 @@ public class Tables {
     public static final Chat CHAT = com.natevaughan.kchat.domain.jooq.tables.Chat.CHAT;
 
     /**
-     * The table <code>kchat.kchat_user</code>.
+     * The table <code>kchat.chat_user</code>.
      */
-    public static final KchatUser KCHAT_USER = com.natevaughan.kchat.domain.jooq.tables.KchatUser.KCHAT_USER;
+    public static final ChatUser CHAT_USER = com.natevaughan.kchat.domain.jooq.tables.ChatUser.CHAT_USER;
 
     /**
      * The table <code>kchat.message</code>.

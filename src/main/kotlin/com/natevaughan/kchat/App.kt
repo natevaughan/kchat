@@ -8,12 +8,13 @@ import com.natevaughan.kchat.AppCompanion.log
 import com.natevaughan.kchat.api.User
 import com.natevaughan.kchat.api.UserRepo
 import com.natevaughan.kchat.config.RestConfig
-import com.natevaughan.kchat.config.SecurityFilter
+import com.natevaughan.kchat.rest.SecurityFilter
 import com.natevaughan.kchat.config.ServiceModule
 import com.natevaughan.kchat.config.admin
 import com.natevaughan.kchat.config.server
-import com.natevaughan.kchat.message.MessageCtrl
-import com.natevaughan.kchat.user.UserCtrl
+import com.natevaughan.kchat.rest.ChatCtrl
+import com.natevaughan.kchat.rest.MessageCtrl
+import com.natevaughan.kchat.rest.UserCtrl
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.overriding

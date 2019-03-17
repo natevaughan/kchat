@@ -2,8 +2,7 @@ package com.natevaughan.kchat.config
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
-import com.natevaughan.kchat.ChatCtrl
-import com.natevaughan.kchat.ChatService
+import com.natevaughan.kchat.rest.ChatCtrl
 import com.natevaughan.kchat.api.ChatRepo
 import com.natevaughan.kchat.api.ConnectionPool
 import com.natevaughan.kchat.api.MessageRepo
@@ -12,10 +11,12 @@ import com.natevaughan.kchat.domain.HikariConnectionPool
 import com.natevaughan.kchat.domain.JooqChatRepo
 import com.natevaughan.kchat.domain.JooqMessageRepo
 import com.natevaughan.kchat.domain.JooqUserRepo
-import com.natevaughan.kchat.message.MessageCtrl
-import com.natevaughan.kchat.message.MessageService
-import com.natevaughan.kchat.user.UserCtrl
-import com.natevaughan.kchat.user.UserService
+import com.natevaughan.kchat.rest.MessageCtrl
+import com.natevaughan.kchat.rest.SecurityFilter
+import com.natevaughan.kchat.service.ChatService
+import com.natevaughan.kchat.service.MessageService
+import com.natevaughan.kchat.service.UserService
+import com.natevaughan.kchat.rest.UserCtrl
 import com.natpryce.konfig.Configuration
 
 /**

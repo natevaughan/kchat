@@ -12,6 +12,7 @@ import com.natevaughan.kchat.framework.NOT_FOUND
 import com.natevaughan.kchat.framework.UNAUTHORIZED
 import com.natevaughan.kchat.framework.UnauthorizedException
 import com.natevaughan.kchat.framework.UtilityCtrl
+import com.natevaughan.kchat.rest.PoweredByResponseFilter
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import java.security.Principal

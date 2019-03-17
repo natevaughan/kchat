@@ -5,7 +5,7 @@ package com.natevaughan.kchat.domain.jooq;
 
 
 import com.natevaughan.kchat.domain.jooq.tables.Chat;
-import com.natevaughan.kchat.domain.jooq.tables.KchatUser;
+import com.natevaughan.kchat.domain.jooq.tables.ChatUser;
 import com.natevaughan.kchat.domain.jooq.tables.Message;
 import com.natevaughan.kchat.domain.jooq.tables.User;
 
@@ -33,7 +33,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Kchat extends SchemaImpl {
 
-    private static final long serialVersionUID = -2056492803;
+    private static final long serialVersionUID = 546054263;
 
     /**
      * The reference instance of <code>kchat</code>
@@ -46,9 +46,9 @@ public class Kchat extends SchemaImpl {
     public final Chat CHAT = com.natevaughan.kchat.domain.jooq.tables.Chat.CHAT;
 
     /**
-     * The table <code>kchat.kchat_user</code>.
+     * The table <code>kchat.chat_user</code>.
      */
-    public final KchatUser KCHAT_USER = com.natevaughan.kchat.domain.jooq.tables.KchatUser.KCHAT_USER;
+    public final ChatUser CHAT_USER = com.natevaughan.kchat.domain.jooq.tables.ChatUser.CHAT_USER;
 
     /**
      * The table <code>kchat.message</code>.
@@ -86,7 +86,7 @@ public class Kchat extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Chat.CHAT,
-            KchatUser.KCHAT_USER,
+            ChatUser.CHAT_USER,
             Message.MESSAGE,
             User.USER);
     }

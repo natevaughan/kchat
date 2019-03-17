@@ -8,6 +8,7 @@ import com.natevaughan.kchat.api.User;
 import com.natevaughan.kchat.domain.jooq.tables.records.MessageRecord;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.ResultQuery;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
@@ -15,6 +16,8 @@ import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.natevaughan.kchat.domain.jooq.Tables.MESSAGE;
 
@@ -32,12 +35,64 @@ public class JooqMessageRepo implements MessageRepo {
 
 	@Override
 	public Iterable<Message> findForChatSinceTimestamp(Chat chat, Instant timestamp) {
-		return null;
+		try (Connection conn = cp.getConnection()) {
+			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			ResultQuery<Record> result = create.select()
+					.from(MESSAGE)
+					.where(MESSAGE.TIMESTAMP.gt(timestamp.toEpochMilli()))
+					.orderBy(MESSAGE.DATE_CREATED.desc());
+
+			if (result == null) {
+				return null;
+			}
+
+			List<Message> messageList = new ArrayList<>();
+
+			for (Record r : result) {
+				messageList.add(new Message(r.getValue(MESSAGE.ID),
+						r.getValue(MESSAGE.DATE_CREATED).toInstant(),
+						r.getValue(MESSAGE.TEXT),
+						new User(r.getValue(MESSAGE.AUTHOR_ID), null, null, null, null),
+						new Chat(r.getValue(MESSAGE.CHAT_ID), null, null, null, null, null),
+						r.getValue(MESSAGE.LAST_EDITED).toInstant()
+				));
+			}
+			return messageList;
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Could not connect to MySQL", e);
+		}
 	}
 
 	@Override
 	public Iterable<Message> findRecent(Chat chat, Integer count) {
-		return null;
+		try (Connection conn = cp.getConnection()) {
+			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			ResultQuery<Record> result = create.select().from(MESSAGE)
+					.where(MESSAGE.CHAT_ID.eq(chat.getId()))
+					.orderBy(MESSAGE.DATE_CREATED.desc())
+					.limit(count);
+
+			if (result == null) {
+				return null;
+			}
+
+			List<Message> messageList = new ArrayList<>(count);
+
+			for (Record r : result) {
+				messageList.add(new Message(r.getValue(MESSAGE.ID),
+						r.getValue(MESSAGE.DATE_CREATED).toInstant(),
+						r.getValue(MESSAGE.TEXT),
+						new User(r.getValue(MESSAGE.AUTHOR_ID), null, null, null, null),
+						new Chat(r.getValue(MESSAGE.CHAT_ID), null, null, null, null, null),
+						r.getValue(MESSAGE.LAST_EDITED).toInstant()
+				));
+			}
+			return messageList;
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Could not connect to MySQL", e);
+		}
 	}
 
 	@Override
@@ -54,7 +109,7 @@ public class JooqMessageRepo implements MessageRepo {
 					r.getValue(MESSAGE.DATE_CREATED).toInstant(),
 					r.getValue(MESSAGE.TEXT),
 					new User(r.getValue(MESSAGE.AUTHOR_ID), null, null, null, null),
-					new Chat(r.getValue(MESSAGE.CHAT_ID), null, null, null, null),
+					new Chat(r.getValue(MESSAGE.CHAT_ID), null, null, null, null, null),
 					r.getValue(MESSAGE.LAST_EDITED).toInstant()
 			);
 
