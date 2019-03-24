@@ -13,4 +13,12 @@
         <appender-ref ref="console" />
     </root>
 
+    <logger name="com.zaxxer.hikari" level="WARN">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="org.jooq" level="WARN">
+        <appender-ref ref="console"/>
+    </logger>
+
 </configuration>

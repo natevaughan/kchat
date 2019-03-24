@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ChatUser extends TableImpl<ChatUserRecord> {
 
-    private static final long serialVersionUID = 1447997435;
+    private static final long serialVersionUID = -1918464881;
 
     /**
      * The reference instance of <code>kchat.chat_user</code>
@@ -57,12 +57,27 @@ public class ChatUser extends TableImpl<ChatUserRecord> {
     /**
      * The column <code>kchat.chat_user.chat_id</code>.
      */
-    public final TableField<ChatUserRecord, Long> CHAT_ID = createField("chat_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ChatUserRecord, byte[]> CHAT_ID = createField("chat_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
 
     /**
-     * The column <code>kchat.chat_user.participants_id</code>.
+     * The column <code>kchat.chat_user.chat_id_text</code>.
      */
-    public final TableField<ChatUserRecord, Long> PARTICIPANTS_ID = createField("participants_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ChatUserRecord, String> CHAT_ID_TEXT = createField("chat_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
+
+    /**
+     * The column <code>kchat.chat_user.user_id</code>.
+     */
+    public final TableField<ChatUserRecord, byte[]> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.chat_user.user_id_text</code>.
+     */
+    public final TableField<ChatUserRecord, String> USER_ID_TEXT = createField("user_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
+
+    /**
+     * The column <code>kchat.chat_user.contextual_privilege</code>.
+     */
+    public final TableField<ChatUserRecord, Integer> CONTEXTUAL_PRIVILEGE = createField("contextual_privilege", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("10", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * Create a <code>kchat.chat_user</code> table reference
@@ -110,7 +125,7 @@ public class ChatUser extends TableImpl<ChatUserRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHAT_USER_FKTIA7RMNDE3JP9CHS, Indexes.CHAT_USER_FKWNOLJBCORVGUUN0P);
+        return Arrays.<Index>asList(Indexes.CHAT_USER_FK_IA7RMNDE3JP9CHS, Indexes.CHAT_USER_FK_NOLJBCORVGUUN0P);
     }
 
     /**
@@ -118,15 +133,15 @@ public class ChatUser extends TableImpl<ChatUserRecord> {
      */
     @Override
     public List<ForeignKey<ChatUserRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ChatUserRecord, ?>>asList(Keys.FKWNOLJBCORVGUUN0P, Keys.FKTIA7RMNDE3JP9CHS);
+        return Arrays.<ForeignKey<ChatUserRecord, ?>>asList(Keys.FK_NOLJBCORVGUUN0P, Keys.FK_IA7RMNDE3JP9CHS);
     }
 
     public Chat chat() {
-        return new Chat(this, Keys.FKWNOLJBCORVGUUN0P);
+        return new Chat(this, Keys.FK_NOLJBCORVGUUN0P);
     }
 
     public User user() {
-        return new User(this, Keys.FKTIA7RMNDE3JP9CHS);
+        return new User(this, Keys.FK_IA7RMNDE3JP9CHS);
     }
 
     /**

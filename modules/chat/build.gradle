@@ -1,6 +1,7 @@
-apply plugin:'kotlin'
 
 dependencies {
 	compile project(':modules:chat-api')
-	compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+
+	compile 'com.natpryce:konfig:1.6.1.0'
+	compile 'com.github.ben-manes.caffeine:caffeine:2.6.2'
 }

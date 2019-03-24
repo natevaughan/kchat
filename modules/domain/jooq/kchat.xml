@@ -3,7 +3,7 @@
     <!-- Configure the database connection here -->
     <jdbc>
         <driver>com.mysql.jdbc.Driver</driver>
-        <url>jdbc:mysql://localhost:3306/kchat</url>
+        <url>jdbc:mysql://localhost:3306/kchat?serverTimezone=UTC</url>
         <user>root</user>
         <password></password>
     </jdbc>

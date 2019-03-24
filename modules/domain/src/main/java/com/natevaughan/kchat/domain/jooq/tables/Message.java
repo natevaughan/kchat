@@ -17,7 +17,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -42,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Message extends TableImpl<MessageRecord> {
 
-    private static final long serialVersionUID = -1079553835;
+    private static final long serialVersionUID = 44709819;
 
     /**
      * The reference instance of <code>kchat.message</code>
@@ -60,7 +59,12 @@ public class Message extends TableImpl<MessageRecord> {
     /**
      * The column <code>kchat.message.id</code>.
      */
-    public final TableField<MessageRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<MessageRecord, byte[]> ID = createField("id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.message.id_text</code>.
+     */
+    public final TableField<MessageRecord, String> ID_TEXT = createField("id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
      * The column <code>kchat.message.date_created</code>.
@@ -78,19 +82,24 @@ public class Message extends TableImpl<MessageRecord> {
     public final TableField<MessageRecord, String> TEXT = createField("text", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>kchat.message.timestamp</code>.
-     */
-    public final TableField<MessageRecord, Long> TIMESTAMP = createField("timestamp", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
-    /**
      * The column <code>kchat.message.author_id</code>.
      */
-    public final TableField<MessageRecord, Long> AUTHOR_ID = createField("author_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MessageRecord, byte[]> AUTHOR_ID = createField("author_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.message.author_id_text</code>.
+     */
+    public final TableField<MessageRecord, String> AUTHOR_ID_TEXT = createField("author_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
      * The column <code>kchat.message.chat_id</code>.
      */
-    public final TableField<MessageRecord, Long> CHAT_ID = createField("chat_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MessageRecord, byte[]> CHAT_ID = createField("chat_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.message.chat_id_text</code>.
+     */
+    public final TableField<MessageRecord, String> CHAT_ID_TEXT = createField("chat_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
      * Create a <code>kchat.message</code> table reference
@@ -138,15 +147,7 @@ public class Message extends TableImpl<MessageRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MESSAGE_FKJBUGTZ1C9YJFJDOZ, Indexes.MESSAGE_FKP7PNYAW7PXPLN82B, Indexes.MESSAGE_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<MessageRecord, Long> getIdentity() {
-        return Keys.IDENTITY_MESSAGE;
+        return Arrays.<Index>asList(Indexes.MESSAGE_FK_7PNYAW7PXPLN82B, Indexes.MESSAGE_FK_BUGTZ1C9YJFJDOZ, Indexes.MESSAGE_PRIMARY);
     }
 
     /**
@@ -170,15 +171,15 @@ public class Message extends TableImpl<MessageRecord> {
      */
     @Override
     public List<ForeignKey<MessageRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<MessageRecord, ?>>asList(Keys.FKJBUGTZ1C9YJFJDOZ, Keys.FKP7PNYAW7PXPLN82B);
+        return Arrays.<ForeignKey<MessageRecord, ?>>asList(Keys.FK_BUGTZ1C9YJFJDOZ, Keys.FK_7PNYAW7PXPLN82B);
     }
 
     public User user() {
-        return new User(this, Keys.FKJBUGTZ1C9YJFJDOZ);
+        return new User(this, Keys.FK_BUGTZ1C9YJFJDOZ);
     }
 
     public Chat chat() {
-        return new Chat(this, Keys.FKP7PNYAW7PXPLN82B);
+        return new Chat(this, Keys.FK_7PNYAW7PXPLN82B);
     }
 
     /**

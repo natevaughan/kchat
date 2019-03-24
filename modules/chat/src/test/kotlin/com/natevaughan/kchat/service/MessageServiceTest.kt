@@ -1,13 +1,17 @@
 package com.natevaughan.kchat.service
 
+import com.natevaughan.kchat.api.Chat
+import com.natevaughan.kchat.api.Message
 import com.natevaughan.kchat.api.MessageRepo
+import com.natevaughan.kchat.api.User
 import com.natevaughan.kchat.framework.NotFoundException
-import com.natevaughan.kchat.service.DomainFactory.buildValidMessage
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
+import java.time.Instant
+import java.util.UUID
 
 /**
  * Created by nate on 12/10/17
@@ -16,14 +20,14 @@ class MessageServiceTest {
 
     @Test
     fun itShouldCallDeleteOnRepoIfUserPassesValidation() {
-        val id = 1L
+		val message = buildValidMessage()
 
-        val message = buildValidMessage()
+		val id = message.id
         val user = message.author
 
         val messageRepo = mock(MessageRepo::class.java)
-        val hatService = mock(ChatService::class.java)
-        val messageService = MessageService(messageRepo, hatService)
+        val chatService = mock(ChatService::class.java)
+        val messageService = DefaultMessageService(messageRepo, chatService)
 
         `when`(messageRepo.findById(id)).thenReturn(message)
 
@@ -34,17 +38,31 @@ class MessageServiceTest {
 
     @Test(expected = NotFoundException::class)
     fun itShouldThrowAnExceptionIfUserIsNotAuthor() {
-        val id = 1L
 
         val message = buildValidMessage()
-        val user = message.author
+        val id = message.id
+		val requester = User(UUID.randomUUID().toString())
 
         val messageRepo = mock(MessageRepo::class.java)
-        val hatService = mock(ChatService::class.java)
-        val messageService = MessageService(messageRepo, hatService)
+		`when`(messageRepo.findById(id)).thenReturn(message)
+        val chatService = mock(ChatService::class.java)
+        val messageService = DefaultMessageService(messageRepo, chatService)
 
-        messageService.delete(id, user)
-        verify(messageRepo).findById(id)
-        verifyNoMoreInteractions(messageRepo)
+		messageService.delete(id, requester)
+        verify(messageRepo).save(message)
+		verifyNoMoreInteractions(messageRepo)
     }
+
+	private fun buildValidMessage(): Message {
+		return Message(
+				UUID.randomUUID().toString(),
+				Instant.now(),
+				"hello, world",
+				User(
+						UUID.randomUUID().toString()
+				),
+				Chat(UUID.randomUUID().toString()),
+				Instant.now()
+		)
+	}
 }

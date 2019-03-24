@@ -1,59 +1,22 @@
 package com.natevaughan.kchat.service
 
 import com.natevaughan.kchat.api.Message
-import com.natevaughan.kchat.api.MessageRepo
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.framework.NotFoundException
-import java.time.Instant
-import javax.inject.Inject
 
 /**
- * Created by nate on 12/3/17
+ * Created by nate on 3/22/19
  */
-class MessageService @Inject constructor(val messageRepo: MessageRepo, val hatService: ChatService) {
+interface MessageService {
 
-    fun findAllSinceTimestamp(hatId: Long, timestamp: Long, user: User): Iterable<Message> {
-        val hat = hatService.findById(hatId, user)
-        return messageRepo.findForChatSinceTimestamp(hat, Instant.ofEpochMilli(timestamp))
-    }
+    fun findAllSinceTimestamp(chatId: String, timestamp: Long, user: User): Iterable<Message>
 
-    fun findRecent(hatId: Long, count: Int, user: User): Iterable<Message> {
-        val hat = hatService.findById(hatId, user)
-        return messageRepo.findRecent(hat, count)
-    }
+    fun findRecent(chatId: String, count: Int, user: User): Iterable<Message>
 
-    fun create(text: String, hatId: Long, user: User): Message {
-        val hat = hatService.findById(hatId, user)
-        val message = Message(text, user, hat)
-        return messageRepo.save(message)
-    }
+    fun create(text: String, chatId: String, user: User): Message
 
-    fun update(text: String, id: Long, user: User): Message {
-        val old = findById(id)
-        if (old != null) {
-            checkAccess(old, user)
-            return messageRepo.save(old.copy(text))
-        }
-        throw NotFoundException("MessageEntity ${id} not found for user ${user.id}")
-    }
+    fun update(text: String, id: String, user: User): Message
 
-    fun findById(id: Long): Message? {
-        return messageRepo.findById(id)
-    }
+    fun findById(id: String): Message?
 
-    fun delete(id: Long, user: User) {
-        val message = messageRepo.findById(id)
-        if (message != null) {
-            checkAccess(message, user)
-            messageRepo.delete(message)
-            return
-        }
-        throw NotFoundException("MessageEntity ${id} not found for user ${user.id}")
-    }
-
-    private fun checkAccess(old: Message, user: User) {
-        if (old.author != user) {
-            throw NotFoundException("MessageEntity ${old.id} not found for user ${user.id}")
-        }
-    }
+    fun delete(id: String, user: User): Boolean
 }

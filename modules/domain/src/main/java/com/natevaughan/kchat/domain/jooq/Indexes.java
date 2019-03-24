@@ -6,7 +6,10 @@ package com.natevaughan.kchat.domain.jooq;
 
 import com.natevaughan.kchat.domain.jooq.tables.Chat;
 import com.natevaughan.kchat.domain.jooq.tables.ChatUser;
+import com.natevaughan.kchat.domain.jooq.tables.Invite;
 import com.natevaughan.kchat.domain.jooq.tables.Message;
+import com.natevaughan.kchat.domain.jooq.tables.Space;
+import com.natevaughan.kchat.domain.jooq.tables.SpaceUser;
 import com.natevaughan.kchat.domain.jooq.tables.User;
 
 import javax.annotation.Generated;
@@ -33,13 +36,25 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index CHAT_FKKM9ZE3MECFXQ1HXK = Indexes0.CHAT_FKKM9ZE3MECFXQ1HXK;
+    public static final Index CHAT_FK_M9ZE3MECFXQ1HXK = Indexes0.CHAT_FK_M9ZE3MECFXQ1HXK;
+    public static final Index CHAT_FK_RWMJFWBPGN86W1P = Indexes0.CHAT_FK_RWMJFWBPGN86W1P;
     public static final Index CHAT_PRIMARY = Indexes0.CHAT_PRIMARY;
-    public static final Index CHAT_USER_FKTIA7RMNDE3JP9CHS = Indexes0.CHAT_USER_FKTIA7RMNDE3JP9CHS;
-    public static final Index CHAT_USER_FKWNOLJBCORVGUUN0P = Indexes0.CHAT_USER_FKWNOLJBCORVGUUN0P;
-    public static final Index MESSAGE_FKJBUGTZ1C9YJFJDOZ = Indexes0.MESSAGE_FKJBUGTZ1C9YJFJDOZ;
-    public static final Index MESSAGE_FKP7PNYAW7PXPLN82B = Indexes0.MESSAGE_FKP7PNYAW7PXPLN82B;
+    public static final Index CHAT_UK_5NUHPU0CZV0E8SL = Indexes0.CHAT_UK_5NUHPU0CZV0E8SL;
+    public static final Index CHAT_USER_FK_IA7RMNDE3JP9CHS = Indexes0.CHAT_USER_FK_IA7RMNDE3JP9CHS;
+    public static final Index CHAT_USER_FK_NOLJBCORVGUUN0P = Indexes0.CHAT_USER_FK_NOLJBCORVGUUN0P;
+    public static final Index INVITE_FK_5ZZ2SYBCC7BFFEC = Indexes0.INVITE_FK_5ZZ2SYBCC7BFFEC;
+    public static final Index INVITE_FK_ZYVUJ3M6SJV0BTP = Indexes0.INVITE_FK_ZYVUJ3M6SJV0BTP;
+    public static final Index INVITE_PRIMARY = Indexes0.INVITE_PRIMARY;
+    public static final Index MESSAGE_FK_7PNYAW7PXPLN82B = Indexes0.MESSAGE_FK_7PNYAW7PXPLN82B;
+    public static final Index MESSAGE_FK_BUGTZ1C9YJFJDOZ = Indexes0.MESSAGE_FK_BUGTZ1C9YJFJDOZ;
     public static final Index MESSAGE_PRIMARY = Indexes0.MESSAGE_PRIMARY;
+    public static final Index SPACE_PRIMARY = Indexes0.SPACE_PRIMARY;
+    public static final Index SPACE_USER_FK_VGRTIOEOCKHTBKU = Indexes0.SPACE_USER_FK_VGRTIOEOCKHTBKU;
+    public static final Index SPACE_USER_PRIMARY = Indexes0.SPACE_USER_PRIMARY;
+    public static final Index SPACE_USER_UK_BSDOTH5WCKBCFZJ = Indexes0.SPACE_USER_UK_BSDOTH5WCKBCFZJ;
+    public static final Index SPACE_USER_UK_YRF8C6FOMC9YLGZ = Indexes0.SPACE_USER_UK_YRF8C6FOMC9YLGZ;
+    public static final Index USER_IDX_1PJBCET7DZ2KZM = Indexes0.USER_IDX_1PJBCET7DZ2KZM;
+    public static final Index USER_NAME = Indexes0.USER_NAME;
     public static final Index USER_PRIMARY = Indexes0.USER_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -47,13 +62,25 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index CHAT_FKKM9ZE3MECFXQ1HXK = Internal.createIndex("FKkM9zE3mecFxq1hxK", Chat.CHAT, new OrderField[] { Chat.CHAT.CREATOR_ID }, false);
+        public static Index CHAT_FK_M9ZE3MECFXQ1HXK = Internal.createIndex("FK_M9zE3mecFxq1hxK", Chat.CHAT, new OrderField[] { Chat.CHAT.SPACE_ID }, false);
+        public static Index CHAT_FK_RWMJFWBPGN86W1P = Internal.createIndex("FK_RWmjFwBpGn86W1p", Chat.CHAT, new OrderField[] { Chat.CHAT.CREATOR_ID }, false);
         public static Index CHAT_PRIMARY = Internal.createIndex("PRIMARY", Chat.CHAT, new OrderField[] { Chat.CHAT.ID }, true);
-        public static Index CHAT_USER_FKTIA7RMNDE3JP9CHS = Internal.createIndex("FKtia7rMnDE3JP9cHs", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.PARTICIPANTS_ID }, false);
-        public static Index CHAT_USER_FKWNOLJBCORVGUUN0P = Internal.createIndex("FKWnoljBcORVgUuN0p", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.CHAT_ID }, false);
-        public static Index MESSAGE_FKJBUGTZ1C9YJFJDOZ = Internal.createIndex("FKJbUgtZ1c9YjFJDOZ", Message.MESSAGE, new OrderField[] { Message.MESSAGE.AUTHOR_ID }, false);
-        public static Index MESSAGE_FKP7PNYAW7PXPLN82B = Internal.createIndex("FKp7PNYAW7PxplN82b", Message.MESSAGE, new OrderField[] { Message.MESSAGE.CHAT_ID }, false);
+        public static Index CHAT_UK_5NUHPU0CZV0E8SL = Internal.createIndex("UK_5NUHPu0cZV0e8sL", Chat.CHAT, new OrderField[] { Chat.CHAT.NAME, Chat.CHAT.SPACE_ID }, true);
+        public static Index CHAT_USER_FK_IA7RMNDE3JP9CHS = Internal.createIndex("FK_ia7rMnDE3JP9cHs", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.USER_ID }, false);
+        public static Index CHAT_USER_FK_NOLJBCORVGUUN0P = Internal.createIndex("FK_noljBcORVgUuN0p", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.CHAT_ID }, false);
+        public static Index INVITE_FK_5ZZ2SYBCC7BFFEC = Internal.createIndex("FK_5zz2sYBCC7bffec", Invite.INVITE, new OrderField[] { Invite.INVITE.CREATOR_ID }, false);
+        public static Index INVITE_FK_ZYVUJ3M6SJV0BTP = Internal.createIndex("FK_zYVuj3m6sJv0BTP", Invite.INVITE, new OrderField[] { Invite.INVITE.SPACE_ID }, false);
+        public static Index INVITE_PRIMARY = Internal.createIndex("PRIMARY", Invite.INVITE, new OrderField[] { Invite.INVITE.TOKEN }, true);
+        public static Index MESSAGE_FK_7PNYAW7PXPLN82B = Internal.createIndex("FK_7PNYAW7PxplN82b", Message.MESSAGE, new OrderField[] { Message.MESSAGE.CHAT_ID }, false);
+        public static Index MESSAGE_FK_BUGTZ1C9YJFJDOZ = Internal.createIndex("FK_bUgtZ1c9YjFJDOZ", Message.MESSAGE, new OrderField[] { Message.MESSAGE.AUTHOR_ID }, false);
         public static Index MESSAGE_PRIMARY = Internal.createIndex("PRIMARY", Message.MESSAGE, new OrderField[] { Message.MESSAGE.ID }, true);
+        public static Index SPACE_PRIMARY = Internal.createIndex("PRIMARY", Space.SPACE, new OrderField[] { Space.SPACE.ID }, true);
+        public static Index SPACE_USER_FK_VGRTIOEOCKHTBKU = Internal.createIndex("FK_VgrTiOEockHTBKU", SpaceUser.SPACE_USER, new OrderField[] { SpaceUser.SPACE_USER.SPACE_ID }, false);
+        public static Index SPACE_USER_PRIMARY = Internal.createIndex("PRIMARY", SpaceUser.SPACE_USER, new OrderField[] { SpaceUser.SPACE_USER.USER_ID, SpaceUser.SPACE_USER.SPACE_ID }, true);
+        public static Index SPACE_USER_UK_BSDOTH5WCKBCFZJ = Internal.createIndex("UK_BsdoTh5WckBCFZJ", SpaceUser.SPACE_USER, new OrderField[] { SpaceUser.SPACE_USER.USER_ALIAS, SpaceUser.SPACE_USER.SPACE_ID }, true);
+        public static Index SPACE_USER_UK_YRF8C6FOMC9YLGZ = Internal.createIndex("UK_Yrf8C6fomC9YlgZ", SpaceUser.SPACE_USER, new OrderField[] { SpaceUser.SPACE_USER.USER_ID, SpaceUser.SPACE_USER.SPACE_ID }, true);
+        public static Index USER_IDX_1PJBCET7DZ2KZM = Internal.createIndex("IDX_1PjBcet7DZ2KZm", User.USER, new OrderField[] { User.USER.API_KEY }, false);
+        public static Index USER_NAME = Internal.createIndex("name", User.USER, new OrderField[] { User.USER.NAME }, true);
         public static Index USER_PRIMARY = Internal.createIndex("PRIMARY", User.USER, new OrderField[] { User.USER.ID }, true);
     }
 }

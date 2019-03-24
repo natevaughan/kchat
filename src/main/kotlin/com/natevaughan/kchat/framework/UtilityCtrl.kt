@@ -22,9 +22,11 @@ class UtilityCtrl {
     val map = mutableMapOf<String, Any>()
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_HTML)
     fun base(@Context sc: SecurityContext): String {
-        return "hello, world"
+        return this::class.java.getResource("/index.html").readText()
+
+
     }
 
     @GET

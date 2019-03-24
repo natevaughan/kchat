@@ -17,7 +17,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -42,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 27872540;
+    private static final long serialVersionUID = 1042201300;
 
     /**
      * The reference instance of <code>kchat.user</code>
@@ -60,7 +59,17 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>kchat.user.id</code>.
      */
-    public final TableField<UserRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<UserRecord, byte[]> ID = createField("id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.user.id_text</code>.
+     */
+    public final TableField<UserRecord, String> ID_TEXT = createField("id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
+
+    /**
+     * The column <code>kchat.user.name</code>.
+     */
+    public final TableField<UserRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>kchat.user.date_created</code>.
@@ -70,17 +79,12 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>kchat.user.api_key</code>.
      */
-    public final TableField<UserRecord, String> API_KEY = createField("api_key", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
-
-    /**
-     * The column <code>kchat.user.name</code>.
-     */
-    public final TableField<UserRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<UserRecord, String> API_KEY = createField("api_key", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>kchat.user.role</code>.
      */
-    public final TableField<UserRecord, Integer> ROLE = createField("role", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<UserRecord, Integer> ROLE = createField("role", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * Create a <code>kchat.user</code> table reference
@@ -128,15 +132,7 @@ public class User extends TableImpl<UserRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USER_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<UserRecord, Long> getIdentity() {
-        return Keys.IDENTITY_USER;
+        return Arrays.<Index>asList(Indexes.USER_IDX_1PJBCET7DZ2KZM, Indexes.USER_NAME, Indexes.USER_PRIMARY);
     }
 
     /**
@@ -152,7 +148,7 @@ public class User extends TableImpl<UserRecord> {
      */
     @Override
     public List<UniqueKey<UserRecord>> getKeys() {
-        return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY);
+        return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY, Keys.KEY_USER_NAME);
     }
 
     /**

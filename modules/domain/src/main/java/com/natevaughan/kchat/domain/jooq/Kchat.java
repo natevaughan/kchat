@@ -6,7 +6,10 @@ package com.natevaughan.kchat.domain.jooq;
 
 import com.natevaughan.kchat.domain.jooq.tables.Chat;
 import com.natevaughan.kchat.domain.jooq.tables.ChatUser;
+import com.natevaughan.kchat.domain.jooq.tables.Invite;
 import com.natevaughan.kchat.domain.jooq.tables.Message;
+import com.natevaughan.kchat.domain.jooq.tables.Space;
+import com.natevaughan.kchat.domain.jooq.tables.SpaceUser;
 import com.natevaughan.kchat.domain.jooq.tables.User;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Kchat extends SchemaImpl {
 
-    private static final long serialVersionUID = 546054263;
+    private static final long serialVersionUID = 595163693;
 
     /**
      * The reference instance of <code>kchat</code>
@@ -51,9 +54,24 @@ public class Kchat extends SchemaImpl {
     public final ChatUser CHAT_USER = com.natevaughan.kchat.domain.jooq.tables.ChatUser.CHAT_USER;
 
     /**
+     * The table <code>kchat.invite</code>.
+     */
+    public final Invite INVITE = com.natevaughan.kchat.domain.jooq.tables.Invite.INVITE;
+
+    /**
      * The table <code>kchat.message</code>.
      */
     public final Message MESSAGE = com.natevaughan.kchat.domain.jooq.tables.Message.MESSAGE;
+
+    /**
+     * The table <code>kchat.space</code>.
+     */
+    public final Space SPACE = com.natevaughan.kchat.domain.jooq.tables.Space.SPACE;
+
+    /**
+     * The table <code>kchat.space_user</code>.
+     */
+    public final SpaceUser SPACE_USER = com.natevaughan.kchat.domain.jooq.tables.SpaceUser.SPACE_USER;
 
     /**
      * The table <code>kchat.user</code>.
@@ -87,7 +105,10 @@ public class Kchat extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             Chat.CHAT,
             ChatUser.CHAT_USER,
+            Invite.INVITE,
             Message.MESSAGE,
+            Space.SPACE,
+            SpaceUser.SPACE_USER,
             User.USER);
     }
 }

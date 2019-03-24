@@ -1,44 +1,22 @@
 package com.natevaughan.kchat.service
 
 import com.natevaughan.kchat.api.Chat
-import com.natevaughan.kchat.api.ChatRepo
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.framework.NotFoundException
-import com.natevaughan.kchat.framework.UnauthorizedException
-import java.util.TreeSet
-import java.util.UUID
-import javax.inject.Inject
 
 /**
- * Created by nate on 12/9/17
+ * Created by nate on 3/22/19
  */
-open class ChatService @Inject constructor(val hatRepo: ChatRepo, val userService: UserService) {
+interface ChatService {
 
-    fun listForUser(user: User): Collection<Chat> {
-        return hatRepo.listForUser(user).toCollection(TreeSet())
-    }
+	fun listForUserAndSpace(spaceId: String, user: User): Collection<Chat>
 
-    fun findById(id: Long, user: User): Chat {
-        val hat = hatRepo.findById(id)
-        if (hat != null) {
-            if (hat.creator == user || hat.participants.contains(user)) {
-                return hat
-            }
-        }
-        throw NotFoundException()
-    }
+	fun findById(id: String, requester: User): Chat
 
-    fun create(name: String, user: User, participantIds: Collection<Long>): Chat {
-        val participants = participantIds.map { userService.findById(it) }
-        val key = UUID.randomUUID().toString()
-        return hatRepo.save(Chat(name, key, user, participants))
-    }
+	fun addUser(chatId: String, requester: User, userId: String): Boolean
 
-    fun delete(id: Long, user: User) {
-        val hat = findById(id, user)
-        if (user != hat.creator) {
-            throw UnauthorizedException("User ${user} is not owner of hat ${hat.id}")
-        }
-        hatRepo.delete(hat)
-    }
+	fun create(name: String, spaceId: String, user: User, type: Chat.Type, participantIds: Collection<String>): Chat
+
+	fun checkAccess(chatId: String, user: User): Boolean
+
+	fun delete(id: String, user: User): Boolean
 }

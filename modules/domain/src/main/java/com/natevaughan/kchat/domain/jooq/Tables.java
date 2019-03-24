@@ -6,7 +6,10 @@ package com.natevaughan.kchat.domain.jooq;
 
 import com.natevaughan.kchat.domain.jooq.tables.Chat;
 import com.natevaughan.kchat.domain.jooq.tables.ChatUser;
+import com.natevaughan.kchat.domain.jooq.tables.Invite;
 import com.natevaughan.kchat.domain.jooq.tables.Message;
+import com.natevaughan.kchat.domain.jooq.tables.Space;
+import com.natevaughan.kchat.domain.jooq.tables.SpaceUser;
 import com.natevaughan.kchat.domain.jooq.tables.User;
 
 import javax.annotation.Generated;
@@ -36,9 +39,24 @@ public class Tables {
     public static final ChatUser CHAT_USER = com.natevaughan.kchat.domain.jooq.tables.ChatUser.CHAT_USER;
 
     /**
+     * The table <code>kchat.invite</code>.
+     */
+    public static final Invite INVITE = com.natevaughan.kchat.domain.jooq.tables.Invite.INVITE;
+
+    /**
      * The table <code>kchat.message</code>.
      */
     public static final Message MESSAGE = com.natevaughan.kchat.domain.jooq.tables.Message.MESSAGE;
+
+    /**
+     * The table <code>kchat.space</code>.
+     */
+    public static final Space SPACE = com.natevaughan.kchat.domain.jooq.tables.Space.SPACE;
+
+    /**
+     * The table <code>kchat.space_user</code>.
+     */
+    public static final SpaceUser SPACE_USER = com.natevaughan.kchat.domain.jooq.tables.SpaceUser.SPACE_USER;
 
     /**
      * The table <code>kchat.user</code>.

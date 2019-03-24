@@ -17,7 +17,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -42,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Chat extends TableImpl<ChatRecord> {
 
-    private static final long serialVersionUID = 260253230;
+    private static final long serialVersionUID = -842226284;
 
     /**
      * The reference instance of <code>kchat.chat</code>
@@ -60,7 +59,12 @@ public class Chat extends TableImpl<ChatRecord> {
     /**
      * The column <code>kchat.chat.id</code>.
      */
-    public final TableField<ChatRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<ChatRecord, byte[]> ID = createField("id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.chat.id_text</code>.
+     */
+    public final TableField<ChatRecord, String> ID_TEXT = createField("id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
      * The column <code>kchat.chat.date_created</code>.
@@ -68,19 +72,34 @@ public class Chat extends TableImpl<ChatRecord> {
     public final TableField<ChatRecord, Timestamp> DATE_CREATED = createField("date_created", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
-     * The column <code>kchat.chat.access_key</code>.
-     */
-    public final TableField<ChatRecord, String> ACCESS_KEY = createField("access_key", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
      * The column <code>kchat.chat.name</code>.
      */
     public final TableField<ChatRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
+     * The column <code>kchat.chat.type</code>.
+     */
+    public final TableField<ChatRecord, Integer> TYPE = createField("type", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>kchat.chat.space_id</code>.
+     */
+    public final TableField<ChatRecord, byte[]> SPACE_ID = createField("space_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.chat.space_id_text</code>.
+     */
+    public final TableField<ChatRecord, String> SPACE_ID_TEXT = createField("space_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
+
+    /**
      * The column <code>kchat.chat.creator_id</code>.
      */
-    public final TableField<ChatRecord, Long> CREATOR_ID = createField("creator_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ChatRecord, byte[]> CREATOR_ID = createField("creator_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
+
+    /**
+     * The column <code>kchat.chat.creator_id_text</code>.
+     */
+    public final TableField<ChatRecord, String> CREATOR_ID_TEXT = createField("creator_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
      * Create a <code>kchat.chat</code> table reference
@@ -128,15 +147,7 @@ public class Chat extends TableImpl<ChatRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHAT_FKKM9ZE3MECFXQ1HXK, Indexes.CHAT_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<ChatRecord, Long> getIdentity() {
-        return Keys.IDENTITY_CHAT;
+        return Arrays.<Index>asList(Indexes.CHAT_FK_M9ZE3MECFXQ1HXK, Indexes.CHAT_FK_RWMJFWBPGN86W1P, Indexes.CHAT_PRIMARY, Indexes.CHAT_UK_5NUHPU0CZV0E8SL);
     }
 
     /**
@@ -152,7 +163,7 @@ public class Chat extends TableImpl<ChatRecord> {
      */
     @Override
     public List<UniqueKey<ChatRecord>> getKeys() {
-        return Arrays.<UniqueKey<ChatRecord>>asList(Keys.KEY_CHAT_PRIMARY);
+        return Arrays.<UniqueKey<ChatRecord>>asList(Keys.KEY_CHAT_PRIMARY, Keys.KEY_CHAT_UK_5NUHPU0CZV0E8SL);
     }
 
     /**
@@ -160,11 +171,15 @@ public class Chat extends TableImpl<ChatRecord> {
      */
     @Override
     public List<ForeignKey<ChatRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ChatRecord, ?>>asList(Keys.FKKM9ZE3MECFXQ1HXK);
+        return Arrays.<ForeignKey<ChatRecord, ?>>asList(Keys.FK_M9ZE3MECFXQ1HXK, Keys.FK_RWMJFWBPGN86W1P);
+    }
+
+    public Space space() {
+        return new Space(this, Keys.FK_M9ZE3MECFXQ1HXK);
     }
 
     public User user() {
-        return new User(this, Keys.FKKM9ZE3MECFXQ1HXK);
+        return new User(this, Keys.FK_RWMJFWBPGN86W1P);
     }
 
     /**

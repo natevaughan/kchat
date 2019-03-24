@@ -1,36 +1,20 @@
 package com.natevaughan.kchat.service
 
+import com.natevaughan.kchat.api.Participant
 import com.natevaughan.kchat.api.User
-import com.natevaughan.kchat.api.UserRepo
-import com.natevaughan.kchat.framework.NotFoundException
-import javax.inject.Inject
 
 /**
- * Created by nate on 12/3/17
+ * Created by nate on 3/22/19
  */
-class UserService @Inject constructor(val userRepo: UserRepo) {
+interface UserService {
 
-    fun findByApiKey(key: String): User {
-        val user = userRepo.findByApiKey(key)
-        if (user != null) {
-            return user
-        }
-        throw NotFoundException("User not found")
-    }
+    fun findByApiKey(key: String): User
 
-    fun findById(id: Long): User {
-        val user = userRepo.findById(id)
-        if (user != null) {
-            return user
-        }
-        throw NotFoundException("User not found")
-    }
+    fun findById(id: String): User
 
-    fun save(user: User): User {
-        return userRepo.save(user)
-    }
+    fun save(user: User): User
 
-    fun delete(user: User): Boolean {
-        return userRepo.delete(user)
-    }
+    fun delete(user: User): Boolean
+
+    fun listForSpace(spaceId: String, user: User): Collection<Participant>
 }
