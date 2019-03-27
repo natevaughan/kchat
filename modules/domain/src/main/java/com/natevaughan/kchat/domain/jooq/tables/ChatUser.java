@@ -22,6 +22,7 @@ import org.jooq.Record;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
@@ -39,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ChatUser extends TableImpl<ChatUserRecord> {
 
-    private static final long serialVersionUID = -1918464881;
+    private static final long serialVersionUID = -498246113;
 
     /**
      * The reference instance of <code>kchat.chat_user</code>
@@ -125,7 +126,23 @@ public class ChatUser extends TableImpl<ChatUserRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHAT_USER_FK_IA7RMNDE3JP9CHS, Indexes.CHAT_USER_FK_NOLJBCORVGUUN0P);
+        return Arrays.<Index>asList(Indexes.CHAT_USER_FK_NOLJBCORVGUUN0P, Indexes.CHAT_USER_PRIMARY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UniqueKey<ChatUserRecord> getPrimaryKey() {
+        return Keys.KEY_CHAT_USER_PRIMARY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UniqueKey<ChatUserRecord>> getKeys() {
+        return Arrays.<UniqueKey<ChatUserRecord>>asList(Keys.KEY_CHAT_USER_PRIMARY);
     }
 
     /**

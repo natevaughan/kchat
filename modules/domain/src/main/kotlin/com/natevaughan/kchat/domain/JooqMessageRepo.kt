@@ -29,7 +29,7 @@ class JooqMessageRepo @Inject constructor(private val cp: ConnectionPool) : Mess
 			val result = create.select()
 					.from(MESSAGE)
 					.where(MESSAGE.DATE_CREATED.gt(Timestamp.from(timestamp)))
-					.orderBy(MESSAGE.DATE_CREATED.desc()).fetch() ?: return emptyList()
+					.orderBy(MESSAGE.DATE_CREATED.asc()).fetch() ?: return emptyList()
 
 			return createFromRecordList(result)
 
@@ -42,9 +42,13 @@ class JooqMessageRepo @Inject constructor(private val cp: ConnectionPool) : Mess
 		val conn = cp.connection
 		try {
 			val create = DSL.using(conn, SQLDialect.MYSQL)
+			println(create.select().from(MESSAGE)
+					.where(MESSAGE.CHAT_ID.eq(getBytes(chat.id)))
+					.orderBy(MESSAGE.DATE_CREATED.asc())
+					.limit(count).getSQL())
 			val r = create.select().from(MESSAGE)
 					.where(MESSAGE.CHAT_ID.eq(getBytes(chat.id)))
-					.orderBy(MESSAGE.DATE_CREATED.desc())
+					.orderBy(MESSAGE.DATE_CREATED.asc())
 					.limit(count).fetch() ?: return emptyList()
 
 			return createFromRecordList(r)
@@ -71,12 +75,16 @@ class JooqMessageRepo @Inject constructor(private val cp: ConnectionPool) : Mess
 		val conn = cp.connection
 		try {
 			val create = DSL.using(conn, SQLDialect.MYSQL)
-			val r = create.insertInto(MESSAGE, MESSAGE.ID, MESSAGE.TEXT, MESSAGE.AUTHOR_ID, MESSAGE.CHAT_ID)
+			val count = create.insertInto(MESSAGE, MESSAGE.ID, MESSAGE.TEXT, MESSAGE.AUTHOR_ID, MESSAGE.CHAT_ID)
 					.values(getBytes(entity.id), entity.text, getBytes(entity.author.id), getBytes(entity.chat.id))
-					.returning(MESSAGE.ID, MESSAGE.DATE_CREATED, MESSAGE.LAST_EDITED)
-					.fetchOne()
+					.execute()
 
-			return createFromRecord(r)
+
+			if (count != 1) {
+				throw SQLException("Unable to save Message $entity")
+			}
+
+			return entity
 
 		} finally {
 			conn.close()
@@ -92,7 +100,7 @@ class JooqMessageRepo @Inject constructor(private val cp: ConnectionPool) : Mess
 					.execute()
 
 			if (count != 1) {
-				throw SQLException("Unable to save Invite $entity")
+				throw SQLException("Unable to delete Message $entity")
 			}
 
 			return true

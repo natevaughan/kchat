@@ -51,6 +51,7 @@ public class Keys {
 
     public static final UniqueKey<ChatRecord> KEY_CHAT_PRIMARY = UniqueKeys0.KEY_CHAT_PRIMARY;
     public static final UniqueKey<ChatRecord> KEY_CHAT_UK_5NUHPU0CZV0E8SL = UniqueKeys0.KEY_CHAT_UK_5NUHPU0CZV0E8SL;
+    public static final UniqueKey<ChatUserRecord> KEY_CHAT_USER_PRIMARY = UniqueKeys0.KEY_CHAT_USER_PRIMARY;
     public static final UniqueKey<InviteRecord> KEY_INVITE_PRIMARY = UniqueKeys0.KEY_INVITE_PRIMARY;
     public static final UniqueKey<MessageRecord> KEY_MESSAGE_PRIMARY = UniqueKeys0.KEY_MESSAGE_PRIMARY;
     public static final UniqueKey<SpaceRecord> KEY_SPACE_PRIMARY = UniqueKeys0.KEY_SPACE_PRIMARY;
@@ -65,7 +66,6 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<ChatRecord, SpaceRecord> FK_M9ZE3MECFXQ1HXK = ForeignKeys0.FK_M9ZE3MECFXQ1HXK;
-    public static final ForeignKey<ChatRecord, UserRecord> FK_RWMJFWBPGN86W1P = ForeignKeys0.FK_RWMJFWBPGN86W1P;
     public static final ForeignKey<ChatUserRecord, ChatRecord> FK_NOLJBCORVGUUN0P = ForeignKeys0.FK_NOLJBCORVGUUN0P;
     public static final ForeignKey<ChatUserRecord, UserRecord> FK_IA7RMNDE3JP9CHS = ForeignKeys0.FK_IA7RMNDE3JP9CHS;
     public static final ForeignKey<InviteRecord, SpaceRecord> FK_ZYVUJ3M6SJV0BTP = ForeignKeys0.FK_ZYVUJ3M6SJV0BTP;
@@ -82,6 +82,7 @@ public class Keys {
     private static class UniqueKeys0 {
         public static final UniqueKey<ChatRecord> KEY_CHAT_PRIMARY = Internal.createUniqueKey(Chat.CHAT, "KEY_chat_PRIMARY", Chat.CHAT.ID);
         public static final UniqueKey<ChatRecord> KEY_CHAT_UK_5NUHPU0CZV0E8SL = Internal.createUniqueKey(Chat.CHAT, "KEY_chat_UK_5NUHPu0cZV0e8sL", Chat.CHAT.NAME, Chat.CHAT.SPACE_ID);
+        public static final UniqueKey<ChatUserRecord> KEY_CHAT_USER_PRIMARY = Internal.createUniqueKey(ChatUser.CHAT_USER, "KEY_chat_user_PRIMARY", ChatUser.CHAT_USER.USER_ID, ChatUser.CHAT_USER.CHAT_ID);
         public static final UniqueKey<InviteRecord> KEY_INVITE_PRIMARY = Internal.createUniqueKey(Invite.INVITE, "KEY_invite_PRIMARY", Invite.INVITE.TOKEN);
         public static final UniqueKey<MessageRecord> KEY_MESSAGE_PRIMARY = Internal.createUniqueKey(Message.MESSAGE, "KEY_message_PRIMARY", Message.MESSAGE.ID);
         public static final UniqueKey<SpaceRecord> KEY_SPACE_PRIMARY = Internal.createUniqueKey(Space.SPACE, "KEY_space_PRIMARY", Space.SPACE.ID);
@@ -94,7 +95,6 @@ public class Keys {
 
     private static class ForeignKeys0 {
         public static final ForeignKey<ChatRecord, SpaceRecord> FK_M9ZE3MECFXQ1HXK = Internal.createForeignKey(com.natevaughan.kchat.domain.jooq.Keys.KEY_SPACE_PRIMARY, Chat.CHAT, "FK_M9zE3mecFxq1hxK", Chat.CHAT.SPACE_ID);
-        public static final ForeignKey<ChatRecord, UserRecord> FK_RWMJFWBPGN86W1P = Internal.createForeignKey(com.natevaughan.kchat.domain.jooq.Keys.KEY_USER_PRIMARY, Chat.CHAT, "FK_RWmjFwBpGn86W1p", Chat.CHAT.CREATOR_ID);
         public static final ForeignKey<ChatUserRecord, ChatRecord> FK_NOLJBCORVGUUN0P = Internal.createForeignKey(com.natevaughan.kchat.domain.jooq.Keys.KEY_CHAT_PRIMARY, ChatUser.CHAT_USER, "FK_noljBcORVgUuN0p", ChatUser.CHAT_USER.CHAT_ID);
         public static final ForeignKey<ChatUserRecord, UserRecord> FK_IA7RMNDE3JP9CHS = Internal.createForeignKey(com.natevaughan.kchat.domain.jooq.Keys.KEY_USER_PRIMARY, ChatUser.CHAT_USER, "FK_ia7rMnDE3JP9cHs", ChatUser.CHAT_USER.USER_ID);
         public static final ForeignKey<InviteRecord, SpaceRecord> FK_ZYVUJ3M6SJV0BTP = Internal.createForeignKey(com.natevaughan.kchat.domain.jooq.Keys.KEY_SPACE_PRIMARY, Invite.INVITE, "FK_zYVuj3m6sJv0BTP", Invite.INVITE.SPACE_ID);

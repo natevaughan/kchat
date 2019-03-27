@@ -37,11 +37,10 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index CHAT_FK_M9ZE3MECFXQ1HXK = Indexes0.CHAT_FK_M9ZE3MECFXQ1HXK;
-    public static final Index CHAT_FK_RWMJFWBPGN86W1P = Indexes0.CHAT_FK_RWMJFWBPGN86W1P;
     public static final Index CHAT_PRIMARY = Indexes0.CHAT_PRIMARY;
     public static final Index CHAT_UK_5NUHPU0CZV0E8SL = Indexes0.CHAT_UK_5NUHPU0CZV0E8SL;
-    public static final Index CHAT_USER_FK_IA7RMNDE3JP9CHS = Indexes0.CHAT_USER_FK_IA7RMNDE3JP9CHS;
     public static final Index CHAT_USER_FK_NOLJBCORVGUUN0P = Indexes0.CHAT_USER_FK_NOLJBCORVGUUN0P;
+    public static final Index CHAT_USER_PRIMARY = Indexes0.CHAT_USER_PRIMARY;
     public static final Index INVITE_FK_5ZZ2SYBCC7BFFEC = Indexes0.INVITE_FK_5ZZ2SYBCC7BFFEC;
     public static final Index INVITE_FK_ZYVUJ3M6SJV0BTP = Indexes0.INVITE_FK_ZYVUJ3M6SJV0BTP;
     public static final Index INVITE_PRIMARY = Indexes0.INVITE_PRIMARY;
@@ -63,11 +62,10 @@ public class Indexes {
 
     private static class Indexes0 {
         public static Index CHAT_FK_M9ZE3MECFXQ1HXK = Internal.createIndex("FK_M9zE3mecFxq1hxK", Chat.CHAT, new OrderField[] { Chat.CHAT.SPACE_ID }, false);
-        public static Index CHAT_FK_RWMJFWBPGN86W1P = Internal.createIndex("FK_RWmjFwBpGn86W1p", Chat.CHAT, new OrderField[] { Chat.CHAT.CREATOR_ID }, false);
         public static Index CHAT_PRIMARY = Internal.createIndex("PRIMARY", Chat.CHAT, new OrderField[] { Chat.CHAT.ID }, true);
         public static Index CHAT_UK_5NUHPU0CZV0E8SL = Internal.createIndex("UK_5NUHPu0cZV0e8sL", Chat.CHAT, new OrderField[] { Chat.CHAT.NAME, Chat.CHAT.SPACE_ID }, true);
-        public static Index CHAT_USER_FK_IA7RMNDE3JP9CHS = Internal.createIndex("FK_ia7rMnDE3JP9cHs", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.USER_ID }, false);
         public static Index CHAT_USER_FK_NOLJBCORVGUUN0P = Internal.createIndex("FK_noljBcORVgUuN0p", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.CHAT_ID }, false);
+        public static Index CHAT_USER_PRIMARY = Internal.createIndex("PRIMARY", ChatUser.CHAT_USER, new OrderField[] { ChatUser.CHAT_USER.USER_ID, ChatUser.CHAT_USER.CHAT_ID }, true);
         public static Index INVITE_FK_5ZZ2SYBCC7BFFEC = Internal.createIndex("FK_5zz2sYBCC7bffec", Invite.INVITE, new OrderField[] { Invite.INVITE.CREATOR_ID }, false);
         public static Index INVITE_FK_ZYVUJ3M6SJV0BTP = Internal.createIndex("FK_zYVuj3m6sJv0BTP", Invite.INVITE, new OrderField[] { Invite.INVITE.SPACE_ID }, false);
         public static Index INVITE_PRIMARY = Internal.createIndex("PRIMARY", Invite.INVITE, new OrderField[] { Invite.INVITE.TOKEN }, true);

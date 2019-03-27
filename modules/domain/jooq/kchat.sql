@@ -23,16 +23,6 @@ CREATE TABLE `chat` (
               14,0,'-'),
           19,0,'-'),
       24,0,'-')
-  ) virtual,
-  `creator_id` binary(16) NOT NULL,
-  `creator_id_text` varchar(36) generated always as
-  (insert(
-      insert(
-          insert(
-              insert(hex(`creator_id`),9,0,'-'),
-              14,0,'-'),
-          19,0,'-'),
-      24,0,'-')
   ) virtual
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -57,7 +47,8 @@ CREATE TABLE `chat_user` (
           19,0,'-'),
       24,0,'-')
   ) virtual,
-  `contextual_privilege` int(11) NOT NULL DEFAULT 10
+  `contextual_privilege` int(11) NOT NULL DEFAULT 10,
+  PRIMARY KEY (`user_id`, `chat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `message` (
@@ -195,7 +186,6 @@ CREATE TABLE `space_user` (
 
 ALTER TABLE `chat`
 ADD CONSTRAINT `UK_5NUHPu0cZV0e8sL` UNIQUE (`name`,`space_id`),
-ADD CONSTRAINT `FK_RWmjFwBpGn86W1p` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`),
 ADD CONSTRAINT `FK_M9zE3mecFxq1hxK` FOREIGN KEY (`space_id`) REFERENCES `space` (`id`);
 
 ALTER TABLE `chat_user`

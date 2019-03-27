@@ -26,6 +26,15 @@ import javax.ws.rs.core.SecurityContext
  */
 class ChatHandler constructor(val spaceId: String, val spaceService: SpaceService, val chatService: ChatService, val messageService: MessageService) {
 
+	companion object {
+		const val CHAT = "chat"
+		const val CHAT_WITH_ID = "$CHAT/{chatId}"
+		const val ADD_USER = "$CHAT_WITH_ID/addUser"
+		const val MESSAGE = "$CHAT_WITH_ID/message"
+		const val MESSAGE_SINCE = "$MESSAGE/since/{instant}"
+		const val MESSAGE_PREVIOUS = "$MESSAGE/previous/{count}"
+	}
+
 	val accessibleCache: LoadingCache<String, Boolean> = Caffeine
 			.newBuilder()
 			.maximumSize(1000L)
@@ -34,9 +43,8 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 				spaceService.checkAccess(spaceId, userId)
 			}
 
-
 	@GET
-	@Path("chat")
+	@Path(CHAT)
 	@Produces(MediaType.APPLICATION_JSON)
 	fun listForUser(@Context sc: SecurityContext): Collection<Chat> {
 		val user = sc.userPrincipal as User
@@ -47,7 +55,7 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 	}
 
 	@POST
-	@Path("chat")
+	@Path(CHAT)
 	@Produces(MediaType.APPLICATION_JSON)
 	fun create(body: RestChat, @Context sc: SecurityContext): Chat {
 		val user = sc.userPrincipal as User
@@ -59,7 +67,7 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 	}
 
 	@GET
-	@Path("chat/{chatId}")
+	@Path(CHAT_WITH_ID)
 	@Produces(MediaType.APPLICATION_JSON)
 	fun messages(@PathParam("chatId") chatId: String, @Context sc: SecurityContext): Chat {
 		val user = sc.userPrincipal as User
@@ -70,7 +78,7 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 	}
 
 	@POST
-	@Path("chat/{chatId}/addUser")
+	@Path(ADD_USER)
 	@Produces(MediaType.APPLICATION_JSON)
 	fun addUser(@PathParam("chatId") chatId: String, addUserRequest: AddUserRequest, @Context sc: SecurityContext): Response {
 		val user = sc.userPrincipal as User
@@ -83,8 +91,19 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 		throw NotFoundException("Space not found $spaceId")
 	}
 
+	@POST
+	@Path(MESSAGE)
+	@Produces(MediaType.APPLICATION_JSON)
+	fun createMessages(@PathParam("chatId") chatId: String, message: MessageRequest, @Context sc: SecurityContext): Message {
+		val user = sc.userPrincipal as User
+		if (true == accessibleCache.get(user.id)) {
+			return messageService.create(message.text, chatId, sc.userPrincipal as User)
+		}
+		throw NotFoundException("Space not found $spaceId")
+	}
+
 	@GET
-	@Path("chat/{chatId}/messages/since/{instant}")
+	@Path(MESSAGE_SINCE)
 	@Produces(MediaType.APPLICATION_JSON)
 	fun getMessages(@PathParam("chatId") chatId: String, @PathParam("instant") since: Long, @Context sc: SecurityContext): Iterable<Message> {
 		val user = sc.userPrincipal as User
@@ -93,13 +112,14 @@ class ChatHandler constructor(val spaceId: String, val spaceService: SpaceServic
 		}
 		throw NotFoundException("Space not found $spaceId")
 	}
-	@POST
-	@Path("chat/{chatId}/messages/")
+
+	@GET
+	@Path(MESSAGE_PREVIOUS)
 	@Produces(MediaType.APPLICATION_JSON)
-	fun createMessages(@PathParam("chatId") chatId: String, message: MessageRequest, @Context sc: SecurityContext): Message {
+	fun getLastMessages(@PathParam("chatId") chatId: String, @PathParam("count") count: Int, @Context sc: SecurityContext): Iterable<Message> {
 		val user = sc.userPrincipal as User
 		if (true == accessibleCache.get(user.id)) {
-			return messageService.create(message.text, chatId, sc.userPrincipal as User)
+			return messageService.findRecent(chatId, count, sc.userPrincipal as User)
 		}
 		throw NotFoundException("Space not found $spaceId")
 	}

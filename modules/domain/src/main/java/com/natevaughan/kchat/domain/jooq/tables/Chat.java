@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Chat extends TableImpl<ChatRecord> {
 
-    private static final long serialVersionUID = -842226284;
+    private static final long serialVersionUID = 367786884;
 
     /**
      * The reference instance of <code>kchat.chat</code>
@@ -92,16 +92,6 @@ public class Chat extends TableImpl<ChatRecord> {
     public final TableField<ChatRecord, String> SPACE_ID_TEXT = createField("space_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
 
     /**
-     * The column <code>kchat.chat.creator_id</code>.
-     */
-    public final TableField<ChatRecord, byte[]> CREATOR_ID = createField("creator_id", org.jooq.impl.SQLDataType.BINARY(16).nullable(false), this, "");
-
-    /**
-     * The column <code>kchat.chat.creator_id_text</code>.
-     */
-    public final TableField<ChatRecord, String> CREATOR_ID_TEXT = createField("creator_id_text", org.jooq.impl.SQLDataType.VARCHAR(36), this, "");
-
-    /**
      * Create a <code>kchat.chat</code> table reference
      */
     public Chat() {
@@ -147,7 +137,7 @@ public class Chat extends TableImpl<ChatRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHAT_FK_M9ZE3MECFXQ1HXK, Indexes.CHAT_FK_RWMJFWBPGN86W1P, Indexes.CHAT_PRIMARY, Indexes.CHAT_UK_5NUHPU0CZV0E8SL);
+        return Arrays.<Index>asList(Indexes.CHAT_FK_M9ZE3MECFXQ1HXK, Indexes.CHAT_PRIMARY, Indexes.CHAT_UK_5NUHPU0CZV0E8SL);
     }
 
     /**
@@ -171,15 +161,11 @@ public class Chat extends TableImpl<ChatRecord> {
      */
     @Override
     public List<ForeignKey<ChatRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ChatRecord, ?>>asList(Keys.FK_M9ZE3MECFXQ1HXK, Keys.FK_RWMJFWBPGN86W1P);
+        return Arrays.<ForeignKey<ChatRecord, ?>>asList(Keys.FK_M9ZE3MECFXQ1HXK);
     }
 
     public Space space() {
         return new Space(this, Keys.FK_M9ZE3MECFXQ1HXK);
-    }
-
-    public User user() {
-        return new User(this, Keys.FK_RWMJFWBPGN86W1P);
     }
 
     /**

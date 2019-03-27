@@ -11,7 +11,6 @@ import com.natevaughan.kchat.domain.jooq.Tables.CHAT_USER
 import com.natevaughan.kchat.framework.BadRequestException
 import com.natevaughan.kchat.framework.NotFoundException
 import org.jooq.Record
-import org.jooq.Result
 import org.jooq.SQLDialect
 import org.jooq.exception.DataAccessException
 import org.jooq.impl.DSL
@@ -32,16 +31,8 @@ class JooqChatRepo @Inject constructor(private val cp: ConnectionPool) : ChatRep
 			val chatList = HashSet<Chat>()
 
 			val create = DSL.using(conn, SQLDialect.MYSQL)
-			var result: Result<Record>? = create.select().from(CHAT)
-					.where(CHAT.CREATOR_ID.eq(getBytes(user.id)))
-					.and(CHAT.SPACE_ID.eq(getBytes(spaceId)))
-					.fetch()
 
-			if (result != null) {
-				chatList.addAll(result.map { parseFromRecord(it) })
-			}
-
-			result = create.select()
+			var result = create.select()
 					.from(CHAT)
 					.innerJoin(CHAT_USER)
 					.on(CHAT_USER.CHAT_ID.eq(CHAT.ID))

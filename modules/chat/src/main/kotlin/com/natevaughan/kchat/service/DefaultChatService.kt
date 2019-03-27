@@ -51,7 +51,7 @@ class DefaultChatService @Inject constructor(val chatRepo: ChatRepo, val userSer
     }
 
     override fun create(name: String, spaceId: String, user: User, type: Chat.Type, participantIds: Collection<String>): Chat {
-        val participants = (participantIds).map { Participant(userService.findById(it), ContextualPrivilege.PARTICIPANT) }
+        val participants = (participantIds).filter { it != user.id }.map { Participant(userService.findById(it), ContextualPrivilege.PARTICIPANT) }
         return chatRepo.save(Chat(UUID.randomUUID().toString(), Instant.now(), name, Space(spaceId), type, (participants + Participant(user, ContextualPrivilege.CREATOR))))
     }
 
